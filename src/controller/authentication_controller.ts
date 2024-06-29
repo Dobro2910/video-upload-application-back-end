@@ -23,14 +23,14 @@ export class AuthenticationController {
     }
 
     async createUser(req: Request, res: Response) {
-        const userName = req.params.userName;
-        const userEmail = req.params.userEmail;
-        const userPassword = req.params.userPassword;
+        const userName = req.body.userName;
+        const userEmail = req.body.userEmail;
+        const userPassword = req.body.userPassword;
 
         const newUser: User = {
             userName: userName,
             userEmail: userEmail,
-            userPassword: userPassword // Make sure to hash this before storing it in the database
+            userPassword: userPassword
         };
         
         const token = await this.authenticationService.createUser(newUser);
@@ -44,7 +44,7 @@ export class AuthenticationController {
 
     async updateUserPassword(req: Request, res: Response) {
         const userEmail = req.params.userEmail;
-        const newPassword = req.params.userPassword;
+        const newPassword = req.body.userPassword;
 
         await this.authenticationService.updateUserPassword(userEmail, newPassword);
     };

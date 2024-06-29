@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { Express, Request, Response } from 'express';
 import pool from './config/postgresdb';
 import dotenv from "dotenv";
 
@@ -7,7 +7,14 @@ import { AuthenticationRepositoryImpl } from './repository/authentication/postgr
 import { AuthenticationService } from './service/authentication_service';
 import { AuthenticationController } from './controller/authentication_controller';
 
-const app = express();
+// Load environment variables
+dotenv.config();
+
+const app: Express = express();
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
 const port = process.env.PORT || 3001;
 
 const authenticationRepository = new AuthenticationRepositoryImpl(pool);
@@ -18,7 +25,7 @@ app.get('/', (req: Request, res: Response) => {res.send('Hello, TypeScript Node.
 
 // Authentication
 app.get("/authentication/:userEmail", (req: Request, res: Response) => authenticationController.findUserByEmail(req, res));
-app.post("/authentication/createUser", (req: Request, res: Response) => authenticationController.createUser(req, res));
+app.post("/authentication/createuser", (req: Request, res: Response) => authenticationController.createUser(req, res));
 app.put("/authentication/updatePassword/:userEmail", (req: Request, res: Response) => authenticationController.updateUserPassword(req, res));
 
 
