@@ -17,6 +17,7 @@ export class AuthenticationService {
     async createUser(user: User): Promise<string> {
         const newUser: User | null = await this.authenticationRepository.createUser(user);
 
+        // just to ensure that newUser will never be null
         if (!newUser) {
             throw new Error('Failed to create user');
         }

@@ -1,0 +1,19 @@
+{"level":"error","message":"Finding Email: relation \"users\" does not exist"}
+{"level":"error","message":"Finding Email: column \"email\" does not exist"}
+{"level":"error","message":"Finding Email: column \"useremail\" does not exist"}
+{"level":"error","message":"Finding Email: column \"useremail\" does not exist"}
+{"level":"error","message":"Finding Email: column \"useremail\" does not exist"}
+{"level":"error","message":"Finding Email: column \"useremail\" does not exist"}
+{"level":"error","message":"Finding Email: column \"useremail\" does not exist"}
+{"level":"error","message":"Finding Email: column \"useremail\" does not exist"}
+{"level":"error","message":"Finding Email: column \"useremail\" does not exist"}
+{"level":"error","message":"Finding Email: column \"useremail\" does not exist"}
+{"level":"error","message":"Finding Email: column \"useremail\" does not exist"}
+{"level":"error","message":"Finding Email: column \"useremail\" does not exist"}
+{"level":"error","message":"Finding Email: column \"useremail\" does not exist"}
+{"level":"error","message":"Error creating user: duplicate key value violates unique constraint \"uses_pkey\""}
+{"level":"error","message":"Email already exists"}
+{"level":"error","message":"Error creating user: Email already exists"}
+{"level":"error","message":"Error creating user: Email already exists"}
+{"level":"error","message":"Error updating password: column \"id\" does not exist"}
+{"level":"error","message":"Error updating password: column \"id\" does not exist"}

@@ -15,7 +15,7 @@ const app: Express = express();
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 const authenticationRepository = new AuthenticationRepositoryImpl(pool);
 const authenticationService = new AuthenticationService(authenticationRepository);
