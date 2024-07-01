@@ -11,13 +11,30 @@ export class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
+    async login(req: Request, res: Response) {
+        try {
+            const userEmail = req.body.userEmail;
+            const userPassword = req.body.userPassword;
+            const token = await this.authenticationService.login(userEmail, userPassword);
+            
+            if (!token) {
+                res.status(401).send('Authentication failed: Invalid credentials');
+            } else {
+                res.status(200).send(token);
+            }
+        } catch (error) {
+            logger.error(`Error logging in: ${(error as Error).message}`);
+            res.status(500).send('Internal Server Error');
+        }
+    }
+
     async findUserByEmail(req: Request, res: Response) {
         try {
             const userEmail = req.params.userEmail;
             const user: User | null = await this.authenticationService.findUserByEmail(userEmail);
 
             if (user) {
-                res.send(user);
+                res.status(200).send(user);
             } else {
                 res.status(404).send('User not found');
             }
@@ -39,8 +56,8 @@ export class AuthenticationController {
                 userPassword: userPassword
             };
             
-            const token = await this.authenticationService.createUser(newUser);
-            res.send(token);
+            const createdUser: Object | null = await this.authenticationService.createUser(newUser);
+            res.status(200).send(createdUser);
         } catch(error) {
             logger.error(`Error creating user: ${(error as Error).message}`)
             res.status(500).send('Internal Server Error');
