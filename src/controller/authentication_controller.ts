@@ -17,14 +17,20 @@ export class AuthenticationController {
             const userPassword = req.body.userPassword;
             const token = await this.authenticationService.login(userEmail, userPassword);
             
+            // if (!token) {
+            //     res.status(401).send('Authentication failed: Invalid credentials');
+            // } else {
+            //     res.status(200).send(token);
+            // }
             if (!token) {
-                res.status(401).send('Authentication failed: Invalid credentials');
+                res.status(401).json({ error: 'Authentication failed: Invalid credentials' });
             } else {
-                res.status(200).send(token);
+                res.status(200).json({ token });
             }
         } catch (error) {
             logger.error(`Error logging in: ${(error as Error).message}`);
-            res.status(500).send('Internal Server Error');
+            // res.status(500).send('Internal Server Error');
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 

@@ -29,6 +29,7 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
             }
             
             const passwordCheck = await bcrypt.compare(userPassword, encryptedPassword);
+
             if (passwordCheck) {
                 const token = JwtUtils.generateToken({ id: userId, email: userEmail });
                 return token;
