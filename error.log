@@ -18,3 +18,6 @@
 {"level":"error","message":"Error updating password: column \"id\" does not exist"}
 {"level":"error","message":"Error updating password: column \"id\" does not exist"}
 {"level":"error","message":"Error creating user: Password must be at least 6 characters long."}
+{"level":"error","message":"Error creating user: Email already exists"}
+{"level":"error","message":"Error creating user: Internal Server Error"}
+{"level":"error","message":"Error creating user: Internal Server Error"}

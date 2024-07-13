@@ -17,11 +17,6 @@ export class AuthenticationController {
             const userPassword = req.body.userPassword;
             const token = await this.authenticationService.login(userEmail, userPassword);
             
-            // if (!token) {
-            //     res.status(401).send('Authentication failed: Invalid credentials');
-            // } else {
-            //     res.status(200).send(token);
-            // }
             if (!token) {
                 res.status(401).json({ error: 'Authentication failed: Invalid credentials' });
             } else {
@@ -29,7 +24,6 @@ export class AuthenticationController {
             }
         } catch (error) {
             logger.error(`Error logging in: ${(error as Error).message}`);
-            // res.status(500).send('Internal Server Error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -62,11 +56,17 @@ export class AuthenticationController {
                 userPassword: userPassword
             };
             
-            const createdUser: Object | null = await this.authenticationService.createUser(newUser);
-            res.status(200).send(createdUser);
+            const createdUser: string | null = await this.authenticationService.createUser(newUser);
+
+            if (!createdUser) {
+                res.status(401).json({ error: 'Authentication failed: Email Already Exist' });
+            } else {
+                res.status(200).json({ message: 'Successful Registration' });
+            }
+
         } catch(error) {
-            logger.error(`Error creating user: ${(error as Error).message}`)
-            res.status(500).send('Internal Server Error');
+            logger.error(`Error creating user: ${(error as Error).message}`);
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 

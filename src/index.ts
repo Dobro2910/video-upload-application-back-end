@@ -4,7 +4,7 @@ import pool from './config/postgresdb';
 import dotenv from "dotenv";
 
 // Authentication
-import { AuthenticationRepositoryImpl } from './repository/authentication/postgresDB';
+import { AuthenticationRepositoryImplPostgres } from './repository/authentication/postgresDB';
 import { AuthenticationService } from './service/authentication_service';
 import { AuthenticationController } from './controller/authentication_controller';
 
@@ -24,7 +24,7 @@ app.use(cors({
 
 const port = process.env.PORT || 3000;
 
-const authenticationRepository = new AuthenticationRepositoryImpl(pool);
+const authenticationRepository = new AuthenticationRepositoryImplPostgres(pool);
 const authenticationService = new AuthenticationService(authenticationRepository);
 const authenticationController = new AuthenticationController(authenticationService);
 

@@ -9,7 +9,7 @@ export class AuthenticationService {
         this.authenticationRepository = authenticationRepository;
     }
 
-    async login(userEmail: string, newPassword: string): Promise<String | null> {
+    async login(userEmail: string, newPassword: string): Promise<string | null> {
         return await this.authenticationRepository.login(userEmail, newPassword);
     }
 
@@ -17,15 +17,16 @@ export class AuthenticationService {
         return await this.authenticationRepository.findUserByEmail(userEmail);
     };
 
-    async createUser(user: User): Promise<Object | null> {
-        const newUser: Object | null = await this.authenticationRepository.createUser(user);
+    async createUser(user: User): Promise<string | null> {
+        return await this.authenticationRepository.createUser(user);
 
+        // const newUser: string | null = 
         // just to ensure that newUser will never be null
-        if (!newUser) {
-            throw new Error('Failed to create user');
-        }
+        // if (!newUser) {
+        //     throw new Error('Failed to create user');
+        // }
 
-        return newUser;
+        // return newUser;
     }
 
     async updateUserPassword(userEmail: string, newPassword: string): Promise<void> {
