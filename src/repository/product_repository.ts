@@ -7,7 +7,7 @@ export interface ProductRepository {
                         productCategory?: string, 
                         productGender?: string, 
                         productBrand?: string, 
-                        productSize?: string): Promise<Product[] | null>;
+                        productSize?: number): Promise<Product[] | null>;
     createProduct(product: Product): Promise<string | null>;
     updateProductStock(productId: string, productStock: number): Promise<void>;
     deleteProduct(productId: string): Promise<void>;

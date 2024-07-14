@@ -1,8 +1,6 @@
 import { ProductRepository } from '../product_repository';
 import { Product, validate } from '../../model/product_model';
 import { Pool } from 'pg';
-// import bcrypt from 'bcrypt';
-// import { JwtUtils } from "../../utils/jwt";
 
 export class ProductRepositoryImplPostgres implements ProductRepository {
     private pool: Pool;
@@ -34,7 +32,7 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
                         productCategory?: string, 
                         productGender?: string, 
                         productBrand?: string, 
-                        productSize?: string): Promise<Product[] | null> {
+                        productSize?: number): Promise<Product[] | null> {
         let postgresDB;
         try {
             postgresDB = await this.pool.connect();
@@ -50,7 +48,8 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
             } else if (productBrand) {
                 searchKeywordMap.set('product_brand', productBrand);
             } else if (productSize) {
-                searchKeywordMap.set('product_size', productSize);
+                const productSizeString = productSize?.toString();
+                searchKeywordMap.set('product_size', productSizeString);
             }
 
             const searchKeywordMapSize = searchKeywordMap.size;
@@ -62,11 +61,12 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
 
             if (searchKeywordMapSize > 0) {
                 entriesArray.forEach(([key, value], index) => {
-                    if (key == 'product_price') {
+                    if (key == 'product_price' || key == 'product_size') {
                         values.push(Number(value)); // Convert to number if necessary
+                    } else {
+                        conditions.push(`${key} = $${index + 1}`);
+                        values.push(value);
                     }
-                    conditions.push(`${key} = $${index + 1}`);
-                    values.push(value);
                 });
 
                 query += conditions.join(' AND ');
@@ -95,7 +95,7 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
                 throw new Error(validationError);
             }
 
-            const productCreatedAt: Date = new Date();
+            // const productCreatedAt: Date = new Date();
 
             await postgresDB.query(
                 'INSERT INTO products (product_name, product_brand, product_category, product_color, ' +
@@ -113,8 +113,8 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
                     product.productPrice,
                     product.productSize,
                     product.productStock,
-                    productCreatedAt, // Assuming productCreatedAt is correctly formatted for PostgreSQL date type
-                    0
+                    product.productCreatedAt,
+                    product.productAmountSold
                 ]
             );
 
