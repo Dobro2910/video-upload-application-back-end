@@ -57,9 +57,9 @@ export function validate(product: Product): string {
         return "Invalid created date.";
     }
 
-    if (!product.productUpdatedAt || !(product.productUpdatedAt instanceof Date)) {
-        return "Invalid updated date.";
-    }
+    // if (!product.productUpdatedAt || !(product.productUpdatedAt instanceof Date)) {
+    //     return "Invalid updated date.";
+    // }
 
     return "";
 }

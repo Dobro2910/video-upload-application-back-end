@@ -21,3 +21,45 @@
 {"level":"error","message":"Error creating user: Email already exists"}
 {"level":"error","message":"Error creating user: Internal Server Error"}
 {"level":"error","message":"Error creating user: Internal Server Error"}
+{"level":"error","message":"Error logging in: Internal Server Error"}
+{"level":"error","message":"Error create product: Internal Server Error"}
+{"level":"error","message":"Error creating product: Internal Server Error"}
+{"level":"error","message":"Error creating product: Invalid updated date."}
+{"level":"error","message":"Error creating product: Invalid updated date."}
+{"level":"error","message":"Error creating product: invalid input syntax for type integer: \"99.99\""}
+{"level":"error","message":"Error creating product: null value in column \"product_id\" of relation \"products\" violates not-null constraint"}
+{"level":"error","message":"Error creating product: null value in column \"product_id\" of relation \"products\" violates not-null constraint"}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"productId=1\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"filter\""}

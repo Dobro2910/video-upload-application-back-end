@@ -23,20 +23,23 @@ export class ProductController {
             }
 
         } catch (error) {
-            logger.error(`Error logging in: ${(error as Error).message}`);
+            logger.error(`Error getting product info: ${(error as Error).message}`);
             res.status(500).json({ error: 'Internal Server Error' });
         } 
     }
 
     async findProductByFilter(req: Request, res: Response) {
         try {
-            const productPrice: number | undefined = req.params.productPrice ? parseFloat(req.params.productPrice) : undefined;
-            const productCategory: string | null = req.params.productCategory;
-            const productGender: string | null = req.params.productGender;
-            const productBrand: string | null = req.params.productBrand;
-            const productSize: number | undefined = req.params.productSize ? parseFloat(req.params.productSize) : undefined;
+            // const productPrice: number | null = req.query.productPrice ? req.query.productPrice as number : null;
+            // const productSize: number | null = req.query.productSize ? req.query.productSize as number : null;
+            const productPrice: number | undefined = req.query.productPrice ? parseFloat(req.query.productPrice as string) : undefined;
+            const productSize: number | undefined = req.query.productSize ? parseFloat(req.query.productSize as string) : undefined;
 
-            const products: Product[] | null =  await this.productService.findProductByFilter(productPrice, productCategory, productGender, productBrand, productSize);
+            const productCategory: string | null = req.query.productCategory ? req.query.productCategory as string : null;
+            const productGender: string | null = req.query.productGender ? req.query.productGender as string : null;
+            const productBrand: string | null = req.query.productBrand ? req.query.productBrand as string : null;
+
+            const products: Product[] | null =  await this.productService.findProductByFilter(productPrice, productSize, productCategory, productGender, productBrand);
 
             if (!products) {
                 res.status(404).json({ error: 'Product not found' });
@@ -45,7 +48,7 @@ export class ProductController {
             }
 
         } catch (error) {
-            logger.error(`Error logging in: ${(error as Error).message}`);
+            logger.error(`Error finding product by filter: ${(error as Error).message}`);
             res.status(500).json({ error: 'Internal Server Error' });
         } 
     }
@@ -62,14 +65,14 @@ export class ProductController {
                 productImage,
                 productPrice,
                 productSize,
-                productStock,
-                productAmountSold
+                productStock
             } = req.body;
-    
+            
             const productCreatedAt: Date = new Date();
-    
-            // Call ProductService to create the product
-            const result = await this.productService.createProduct({
+            const productAmountSold: number = 0;
+
+            // Create the Product object
+            const product: Product = {
                 productName,
                 productBrand,
                 productCategory,
@@ -82,7 +85,10 @@ export class ProductController {
                 productStock,
                 productCreatedAt,
                 productAmountSold
-            });
+            };
+    
+            // Call ProductService to create the product
+            const result = await this.productService.createProduct(product);
     
             if (!result) {
                 res.status(401).json({ error: 'Create product failed: Validation fail' });
@@ -90,7 +96,7 @@ export class ProductController {
                 res.status(200).json({ message: 'Successful Registration' });
             }
         } catch(error) {
-            logger.error(`Error logging in: ${(error as Error).message}`);
+            logger.error(`Error creating product: ${(error as Error).message}`);
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -115,7 +121,7 @@ export class ProductController {
 
             res.status(200).send("OK");
         } catch(error) {
-            logger.error(`Error updating product stock: ${(error as Error).message}`)
+            logger.error(`Error deleting product: ${(error as Error).message}`)
             res.status(500).send('Internal Server Error');
         }
     }
