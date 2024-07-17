@@ -3,6 +3,9 @@ import cors from 'cors';
 import pool from './config/postgresdb';
 import dotenv from "dotenv";
 
+// JWT Protected Route
+import jwtMiddleware from './middleware/jwtMiddleware'
+
 // Authentication
 import { AuthenticationRepositoryImplPostgres } from './repository/authentication/postgresDB';
 import { AuthenticationService } from './service/authentication_service';
@@ -47,9 +50,10 @@ const productService = new ProductService(productRepository);
 const productController = new ProductController(productService);
 
 app.get("/product/:productId", (req: Request, res: Response) => productController.getProductInfo(req, res));
-app.get("/product/filter", (req: Request, res: Response) => productController.findProductByFilter(req, res));
-app.post("/product/createproduct", (req: Request, res: Response) => productController.createProduct(req, res));
-app.put("/product/updateProductStock/:productId", (req: Request, res: Response) => productController.updateProductStock(req, res));
-app.delete("/product/delete/:productId", (req: Request, res: Response) => productController.deleteProduct(req, res));
+app.get("/product/search/filter", (req: Request, res: Response) => productController.findProductByFilter(req, res));
+
+app.post("/product/createproduct", jwtMiddleware, (req: Request, res: Response) => productController.createProduct(req, res));
+app.put("/product/updateProductStock/:productId", jwtMiddleware, (req: Request, res: Response) => productController.updateProductStock(req, res));
+app.delete("/product/delete/:productId", jwtMiddleware, (req: Request, res: Response) => productController.deleteProduct(req, res));
 
 app.listen(port, () => {console.log(`Server is running on http://localhost:${port}`);});

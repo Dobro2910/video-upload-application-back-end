@@ -9,6 +9,7 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
         this.pool = pool;
     }
 
+    // Not Protected Endpoint
     async getProductInfo(productId: string): Promise<Product | null> {
         let postgresDB;
         try {
@@ -26,64 +27,6 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
         }
     }
 
-    // async findProductByFilter(productPrice: number | undefined, 
-    //                     productSize: number | undefined,
-    //                     productCategory?: string | null, 
-    //                     productGender?: string | null, 
-    //                     productBrand?: string | null): Promise<Product[] | null> {
-    //     let postgresDB;
-    //     try {
-    //         postgresDB = await this.pool.connect();
-    //         const searchKeywordMap: Map<string, string> = new Map();
-
-    //         if (productPrice !== undefined) {
-    //             const productPriceString = productPrice.toString();
-    //             searchKeywordMap.set('product_price', productPriceString);
-    //         } else if (productSize !== undefined) {
-    //             const productSizeString = productSize.toString();
-    //             searchKeywordMap.set('product_size', productSizeString);
-    //         } else if (productCategory) {
-    //             searchKeywordMap.set('product_category', productCategory);
-    //         } else if (productGender) {
-    //             searchKeywordMap.set('product_gender', productGender);
-    //         } else if (productBrand) {
-    //             searchKeywordMap.set('product_brand', productBrand);
-    //         }
-
-    //         const searchKeywordMapSize = searchKeywordMap.size;
-    //         const entriesArray = Array.from(searchKeywordMap.entries());
-
-    //         let query = 'SELECT * FROM products WHERE ';
-    //         const conditions: string[] = [];
-    //         const values: (string | number)[] = [];
-
-    //         if (searchKeywordMapSize > 0) {
-    //             entriesArray.forEach(([key, value], index) => {
-    //                 if (key == 'product_price' || key == 'product_size') {
-    //                     values.push(Number(value)); // Convert to number if necessary
-    //                 } else {
-    //                     conditions.push(`${key} = $${index + 1}`);
-    //                     values.push(value);
-    //                 }
-    //             });
-
-    //             query += conditions.join(' AND ');
-
-    //             const result = await postgresDB.query(query, values);
-    //             return result.rows.length ? result.rows : null;
-    //         } else {
-    //             // If no filters are provided, return null or handle accordingly
-    //             return null;
-    //         }
-    //     } catch (error) {
-    //         throw error;
-    //     } finally {
-    //         if (postgresDB) {
-    //             postgresDB.release();
-    //         }
-    //     }
-    // }
-
     async findProductByFilter(productPrice: number | undefined,
         productSize: number | undefined,
         productCategory?: string | null,
@@ -94,29 +37,35 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
             postgresDB = await this.pool.connect();
             const conditions: string[] = [];
             const values: (string | number)[] = [];
+            let index = 0;
 
             if (productPrice !== undefined) {
-                conditions.push('product_price = $1');
+                index++;
+                conditions.push('product_price = $' + (index).toString());
                 values.push(productPrice);
             }
 
             if (productSize !== undefined) {
-                conditions.push('product_size = $2');
+                index++;
+                conditions.push('product_size = $' + (index).toString());
                 values.push(productSize);
             }
 
             if (productCategory) {
-                conditions.push('product_category = $3');
+                index++;
+                conditions.push('product_category = $' + (index).toString());
                 values.push(productCategory);
             }
 
             if (productGender) {
-                conditions.push('product_gender = $4');
+                index++;
+                conditions.push('product_gender = $' + (index).toString());
                 values.push(productGender);
             }
 
             if (productBrand) {
-                conditions.push('product_brand = $5');
+                index++;
+                conditions.push('product_brand = $' + (index).toString());
                 values.push(productBrand);
             }
 
@@ -124,6 +73,7 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
             if (conditions.length > 0) {
                 query += ' WHERE ' + conditions.join(' AND ');
 
+                // console.log(query);
                 const result = await postgresDB.query(query, values);
                 return result.rows.length ? result.rows : null;
             } else {
@@ -139,6 +89,8 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
         }
     }
 
+
+    // Protected Endpoint
     async createProduct(product: Product): Promise<string | null> {
         let postgresDB;
         try {
@@ -183,7 +135,7 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
         let postgresDB;
         try {
             postgresDB = await this.pool.connect();
-            await postgresDB.query('UPDATE products SET user_stock = $1 WHERE product_id = $2', [productStock, productId]);
+            await postgresDB.query('UPDATE products SET product_stock = $1 WHERE product_id = $2', [productStock, productId]);
         } catch (error) {
             throw error;
         } finally {

@@ -30,8 +30,6 @@ export class ProductController {
 
     async findProductByFilter(req: Request, res: Response) {
         try {
-            // const productPrice: number | null = req.query.productPrice ? req.query.productPrice as number : null;
-            // const productSize: number | null = req.query.productSize ? req.query.productSize as number : null;
             const productPrice: number | undefined = req.query.productPrice ? parseFloat(req.query.productPrice as string) : undefined;
             const productSize: number | undefined = req.query.productSize ? parseFloat(req.query.productSize as string) : undefined;
 
