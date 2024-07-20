@@ -7,7 +7,7 @@ export interface Product {
     productGender: string;
     productCategory: string;
     productBrand: string;
-    productSize: number;
+    productSize: string;
     productColor: string;
     productStock: number;
     productImage: string;
@@ -37,7 +37,7 @@ export function validate(product: Product): string {
         return "Product brand is required.";
     }
 
-    if (!product.productSize || isNaN(product.productSize) || product.productSize <= 0) {
+    if (!product.productSize || product.productSize.length === 0) {
         return "Invalid product size.";
     }
 

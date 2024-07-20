@@ -84,3 +84,6 @@
 {"level":"error","message":"Error finding product by filter: could not determine data type of parameter $3"}
 {"level":"error","message":"Error updating product stock: column \"user_stock\" of relation \"products\" does not exist"}
 {"level":"error","message":"Error updating product stock: column \"user_stock\" of relation \"products\" does not exist"}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"allproduct\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"getpaginatedproduct\""}
+{"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"getpaginatedproduct\""}

@@ -9,12 +9,20 @@ export class ProductService {
         this.productRepository = productRepository;
     }
 
+    async getAllProduct(): Promise<Product[] | null> {
+        return await this.productRepository.getAllProduct();
+    }
+
+    async getPaginatedProducts(page: number): Promise<Product[] | null> {
+        return await this.productRepository.getPaginatedProducts(page);
+    }
+
     async getProductInfo(productId: string): Promise<Product | null> {
         return await this.productRepository.getProductInfo(productId);
     }
 
     async findProductByFilter(productPrice: number | undefined, 
-                        productSize: number | undefined,
+                        productSize?: string | null,
                         productCategory?: string | null, 
                         productGender?: string | null, 
                         productBrand?: string | null): Promise<Product[] | null> {

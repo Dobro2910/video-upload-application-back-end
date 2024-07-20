@@ -49,11 +49,13 @@ const productRepository = new ProductRepositoryImplPostgres(pool);
 const productService = new ProductService(productRepository);
 const productController = new ProductController(productService);
 
+app.get("/product/allproduct", (req: Request, res: Response) => productController.getAllProduct(req, res));
+app.get("/product/getpaginatedproduct", (req: Request, res: Response) => productController.getPaginatedProducts(req, res));
 app.get("/product/:productId", (req: Request, res: Response) => productController.getProductInfo(req, res));
 app.get("/product/search/filter", (req: Request, res: Response) => productController.findProductByFilter(req, res));
 
 app.post("/product/createproduct", jwtMiddleware, (req: Request, res: Response) => productController.createProduct(req, res));
-app.put("/product/updateProductStock/:productId", jwtMiddleware, (req: Request, res: Response) => productController.updateProductStock(req, res));
+app.put("/product/updateproductstock/:productId", jwtMiddleware, (req: Request, res: Response) => productController.updateProductStock(req, res));
 app.delete("/product/delete/:productId", jwtMiddleware, (req: Request, res: Response) => productController.deleteProduct(req, res));
 
 app.listen(port, () => {console.log(`Server is running on http://localhost:${port}`);});

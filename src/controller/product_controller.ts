@@ -11,6 +11,39 @@ export class ProductController {
         this.productService = productService;
     }
 
+    async getAllProduct(req: Request, res: Response) {
+        try {
+            const products: Product[] | null =  await this.productService.getAllProduct();
+
+            if (!products) {
+                res.status(404).json({ error: 'There are no product' });
+            } else {
+                res.status(200).json({ products });
+            }
+
+        } catch (error) {
+            logger.error(`Error getting all product: ${(error as Error).message}`);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
+    async getPaginatedProducts(req: Request, res: Response) {
+        try {
+            const page: number = parseInt(req.query.page as string);
+            const products: Product[] | null =  await this.productService.getPaginatedProducts(page);
+
+            if (!products) {
+                res.status(404).json({ error: 'There are no product' });
+            } else {
+                res.status(200).json({ products });
+            }
+
+        } catch (error) {
+            logger.error(`Error getting products: ${(error as Error).message}`);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
     async getProductInfo(req: Request, res: Response) {
         try {
             const productId = req.params.productId;
@@ -25,14 +58,13 @@ export class ProductController {
         } catch (error) {
             logger.error(`Error getting product info: ${(error as Error).message}`);
             res.status(500).json({ error: 'Internal Server Error' });
-        } 
+        }
     }
 
     async findProductByFilter(req: Request, res: Response) {
         try {
             const productPrice: number | undefined = req.query.productPrice ? parseFloat(req.query.productPrice as string) : undefined;
-            const productSize: number | undefined = req.query.productSize ? parseFloat(req.query.productSize as string) : undefined;
-
+            const productSize: string | null = req.query.productSize ? req.query.productSize as string : null;
             const productCategory: string | null = req.query.productCategory ? req.query.productCategory as string : null;
             const productGender: string | null = req.query.productGender ? req.query.productGender as string : null;
             const productBrand: string | null = req.query.productBrand ? req.query.productBrand as string : null;
