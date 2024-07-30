@@ -52,7 +52,7 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
         try {
             postgresDB = await this.pool.connect();
             const limit = 18; 
-            // calculate the 20 products we need to take for n pages
+            // calculate the 18 products we need to take for n pages
             const pageRange = (page - 1) * limit;
             const result = await this.pool.query('SELECT * FROM products ORDER BY product_id LIMIT $1 OFFSET $2',[limit, pageRange]);
 
@@ -88,31 +88,20 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
         }
     }
 
-    // Not Protected Endpoint
-    async getProductInfo(productId: string): Promise<Product | null> {
-        let postgresDB;
-        try {
-            postgresDB = await this.pool.connect();
-            const result = await postgresDB.query('SELECT * FROM products WHERE product_id = $1', [productId]);
-
-            // if result = null, return null else return the product
-            return result.rows.length ? result.rows[0] : null;
-        } catch (error) {
-            throw error;
-        } finally {
-            if (postgresDB) {
-                postgresDB.release();
-            }
-        }
-    }
-
-    async findProductByFilter(productPrice: number | undefined,
+    async findProductByFilter(
+        filterPage: number,
+        productPrice: number | undefined,
         productSize?: string | null,
         productCategory?: string | null,
         productGender?: string | null,
         productBrand?: string | null): Promise<Product[] | null> {
         let postgresDB;
         try {
+            // if there are no input, return pagination of all products
+            if (!productPrice && !productSize && !productCategory && !productGender && !productBrand) {
+                return await this.getPaginatedProducts(filterPage);
+            }
+
             postgresDB = await this.pool.connect();
             const conditions: string[] = [];
             const values: (string | number)[] = [];
@@ -150,15 +139,60 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
 
             let query = 'SELECT * FROM products';
             if (conditions.length > 0) {
-                query += ' WHERE ' + conditions.join(' AND ');
+                const limit = 18; 
+                // calculate the 18 products we need to take for n pages
+                const pageRange = (filterPage - 1) * limit;
 
-                // console.log(query);
+                query += ' WHERE ' + conditions.join(' AND ');
+                query += ' LIMIT $' + (++index).toString() + ' OFFSET $' + (++index).toString();
+                values.push(limit)
+                values.push(pageRange)
+
+                console.log(query);
                 const result = await postgresDB.query(query, values);
-                return result.rows.length ? result.rows : null;
+
+                // Transform the data to match the Product interface
+                const products = result.rows.map(row => ({
+                    productId: row.product_id,
+                    productName: row.product_name,
+                    productDescription: row.product_description,
+                    productPrice: row.product_price,
+                    productBrand: row.product_brand,
+                    productCategory: row.product_category,
+                    productColor: row.product_color,
+                    productCreatedAt: row.product_created_at,
+                    productGender: row.product_gender,
+                    productImage: row.product_image,
+                    productSize: row.product_size,
+                    productStock: row.product_stock,
+                    productAmountSold: row.product_amount_sold,
+                    productUpdatedAt: row.product_updated_at,
+                }));
+
+                return products;
+                // return result.rows.length ? result.rows : null;
             } else {
                 // If no filters are provided, return null or handle accordingly
                 return null;
             }
+        } catch (error) {
+            throw error;
+        } finally {
+            if (postgresDB) {
+                postgresDB.release();
+            }
+        }
+    }
+
+    // Not Protected Endpoint
+    async getProductInfo(productId: string): Promise<Product | null> {
+        let postgresDB;
+        try {
+            postgresDB = await this.pool.connect();
+            const result = await postgresDB.query('SELECT * FROM products WHERE product_id = $1', [productId]);
+
+            // if result = null, return null else return the product
+            return result.rows.length ? result.rows[0] : null;
         } catch (error) {
             throw error;
         } finally {

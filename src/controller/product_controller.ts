@@ -63,13 +63,14 @@ export class ProductController {
 
     async findProductByFilter(req: Request, res: Response) {
         try {
+            const filterPage: number = parseInt(req.query.filterPage as string);
             const productPrice: number | undefined = req.query.productPrice ? parseFloat(req.query.productPrice as string) : undefined;
             const productSize: string | null = req.query.productSize ? req.query.productSize as string : null;
             const productCategory: string | null = req.query.productCategory ? req.query.productCategory as string : null;
             const productGender: string | null = req.query.productGender ? req.query.productGender as string : null;
             const productBrand: string | null = req.query.productBrand ? req.query.productBrand as string : null;
 
-            const products: Product[] | null =  await this.productService.findProductByFilter(productPrice, productSize, productCategory, productGender, productBrand);
+            const products: Product[] | null =  await this.productService.findProductByFilter(filterPage, productPrice, productSize, productCategory, productGender, productBrand);
 
             if (!products) {
                 res.status(404).json({ error: 'Product not found' });

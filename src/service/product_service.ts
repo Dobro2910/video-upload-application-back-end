@@ -21,12 +21,14 @@ export class ProductService {
         return await this.productRepository.getProductInfo(productId);
     }
 
-    async findProductByFilter(productPrice: number | undefined, 
+    async findProductByFilter(
+                        filterPage: number,
+                        productPrice: number | undefined, 
                         productSize?: string | null,
                         productCategory?: string | null, 
                         productGender?: string | null, 
                         productBrand?: string | null): Promise<Product[] | null> {
-        return await this.productRepository.findProductByFilter(productPrice, productSize, productCategory, productGender, productBrand);
+        return await this.productRepository.findProductByFilter(filterPage, productPrice, productSize, productCategory, productGender, productBrand);
     }
     
     async createProduct(product: Product): Promise<string | null> {

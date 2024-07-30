@@ -87,3 +87,8 @@
 {"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"allproduct\""}
 {"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"getpaginatedproduct\""}
 {"level":"error","message":"Error getting product info: invalid input syntax for type integer: \"getpaginatedproduct\""}
+{"level":"error","message":"Error finding product by filter: argument of LIMIT must be type bigint, not type text"}
+{"level":"error","message":"Error finding product by filter: argument of LIMIT must be type bigint, not type text"}
+{"level":"error","message":"Error finding product by filter: argument of LIMIT must be type bigint, not type text"}
+{"level":"error","message":"Error finding product by filter: argument of LIMIT must be type bigint, not type text"}
+{"level":"error","message":"Error finding product by filter: argument of LIMIT must be type bigint, not type text"}

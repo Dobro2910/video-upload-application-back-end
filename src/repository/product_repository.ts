@@ -5,7 +5,9 @@ export interface ProductRepository {
     getAllProduct(): Promise<Product[] | null>;
     getPaginatedProducts(page: number): Promise<Product[] | null>;
     getProductInfo(productId: string): Promise<Product | null>;
-    findProductByFilter(productPrice: number | undefined,
+    findProductByFilter(
+                        filterPage: number,
+                        productPrice: number | undefined,
                         productSize?: string | null,
                         productCategory?: string | null,
                         productGender?: string | null,
