@@ -40,9 +40,9 @@ const authenticationService = new AuthenticationService(authenticationRepository
 const authenticationController = new AuthenticationController(authenticationService);
 
 app.post("/authentication/login", (req: Request, res: Response) => authenticationController.login(req, res));
-app.get("/authentication/:userEmail", (req: Request, res: Response) => authenticationController.findUserByEmail(req, res));
 app.post("/authentication/createuser", (req: Request, res: Response) => authenticationController.createUser(req, res));
 app.put("/authentication/updatePassword/:userEmail", (req: Request, res: Response) => authenticationController.updateUserPassword(req, res));
+// app.get("/authentication/:userEmail", (req: Request, res: Response) => authenticationController.getUserByEmail(req, res));
 
 // Product
 const productRepository = new ProductRepositoryImplPostgres(pool);

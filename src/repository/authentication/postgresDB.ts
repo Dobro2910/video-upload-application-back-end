@@ -42,7 +42,7 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
         }
     }
 
-    async findUserByEmail(userEmail: string): Promise<User | null> {
+    async getUserByEmail(userEmail: string): Promise<User | null> {
         let postgresDB;
         try {
             postgresDB = await this.pool.connect();
@@ -71,13 +71,13 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
                 throw new Error(validationError);
             }
 
-            const existingUser = await this.findUserByEmail(user.userEmail);
+            const existingUser = await this.getUserByEmail(user.userEmail);
             if (existingUser) {
                 return null;
             }
 
             const hashedPassword = await bcrypt.hash(user.userPassword, 10);
-            await postgresDB.query('INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3)', [user.userName, user.userEmail, hashedPassword]);
+            await postgresDB.query('INSERT INTO users (user_name, user_email, user_password, user_role) VALUES ($1, $2, $3, $4)', [user.userName, user.userEmail, hashedPassword, user.userRole]);
 
             return 'Successful Registration';
         } catch (error) {

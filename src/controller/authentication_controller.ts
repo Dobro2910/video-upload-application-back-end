@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { User } from '../model/user_model';
+import { User, UserRole } from '../model/user_model';
 import { AuthenticationService } from "../service/authentication_service";
 import logger from '../utils/logger';
 
@@ -28,10 +28,10 @@ export class AuthenticationController {
         }
     }
 
-    async findUserByEmail(req: Request, res: Response) {
+    async getUserByEmail(req: Request, res: Response) {
         try {
             const userEmail = req.params.userEmail;
-            const user: User | null = await this.authenticationService.findUserByEmail(userEmail);
+            const user: User | null = await this.authenticationService.getUserByEmail(userEmail);
 
             if (user) {
                 res.status(200).send(user);
@@ -53,7 +53,8 @@ export class AuthenticationController {
             const newUser: User = {
                 userName: userName,
                 userEmail: userEmail,
-                userPassword: userPassword
+                userPassword: userPassword,
+                userRole: UserRole.User
             };
             
             const createdUser: string | null = await this.authenticationService.createUser(newUser);
