@@ -92,3 +92,26 @@
 {"level":"error","message":"Error finding product by filter: argument of LIMIT must be type bigint, not type text"}
 {"level":"error","message":"Error finding product by filter: argument of LIMIT must be type bigint, not type text"}
 {"level":"error","message":"Error finding product by filter: argument of LIMIT must be type bigint, not type text"}
+{"level":"error","message":"Error getting products: relation \"product_prod\" does not exist"}
+{"level":"error","message":"Error getting products: relation \"products_color_vaiety_detail_prod\" does not exist"}
+{"level":"error","message":"Error getting products: bind message supplies 2 parameters, but prepared statement \"\" requires 1"}
+{"level":"error","message":"Error getting products: argument list must have even number of elements"}
+{"level":"error","message":"Error finding product by filter: syntax error at or near \"=\""}
+{"level":"error","message":"Error finding product by filter: syntax error at or near \"WHERE\""}
+{"level":"error","message":"Error finding product by filter: syntax error at or near \"WHERE\""}
+{"level":"error","message":"Error finding product by filter: syntax error at or near \"=\""}
+{"level":"error","message":"Error finding product by filter: syntax error at or near \"=\""}
+{"level":"error","message":"Error finding product by filter: syntax error at or near \"=\""}
+{"level":"error","message":"Error finding product by filter: syntax error at or near \"=\""}
+{"level":"error","message":"Error finding product by filter: syntax error at or near \"=\""}
+{"level":"error","message":"Error finding product by filter: syntax error at or near \"=\""}
+{"level":"error","message":"Error finding product by filter: syntax error at or near \"=\""}
+{"level":"error","message":"Error finding product by filter: syntax error at or near \"=\""}
+{"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
+{"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
+{"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
+{"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
+{"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
+{"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
+{"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
+{"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
