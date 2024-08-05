@@ -15,7 +15,7 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
         let postgresDB;
         try {
             postgresDB = await this.pool.connect();
-            const result = await postgresDB.query('SELECT user_id, user_password FROM users WHERE user_email = $1', [userEmail]);
+            const result = await postgresDB.query('SELECT user_id, user_password, user_role FROM users WHERE user_email = $1', [userEmail]);
 
             if (result.rows.length !== 1) {
                 return null;
@@ -24,11 +24,12 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
             const row = result.rows[0];
             const userId = row.user_id;
             const encryptedPassword = row.user_password;
+            const userRole = row.user_role;
 
             const passwordCheck = await bcrypt.compare(userPassword, encryptedPassword);
 
             if (passwordCheck) {
-                const token = JwtUtils.generateToken({ id: userId, email: userEmail });
+                const token = JwtUtils.generateToken({ id: userId, email: userEmail, role: userRole });
                 return token;
             } else {
                 return null;
