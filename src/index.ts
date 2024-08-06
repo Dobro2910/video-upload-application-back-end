@@ -55,7 +55,7 @@ app.get("/product/search/filter", (req: Request, res: Response) => productContro
 // app.get("/product/:productId", (req: Request, res: Response) => productController.getProductInfo(req, res));
 
 // app.post("/product/createproduct", jwtMiddleware, (req: Request, res: Response) => productController.createProduct(req, res));
-// app.put("/product/updateproductstock/:productId", jwtMiddleware, (req: Request, res: Response) => productController.updateProductStock(req, res));
+// app.put("/product/updateproductcolorvarietydetail/:productId", jwtMiddleware, (req: Request, res: Response) => productController.updateProductStock(req, res));
 // app.delete("/product/delete/:productId", jwtMiddleware, (req: Request, res: Response) => productController.deleteProduct(req, res));
 
 app.listen(port, () => {console.log(`Server is running on http://localhost:${port}`);});

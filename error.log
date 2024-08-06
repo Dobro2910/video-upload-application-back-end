@@ -115,3 +115,4 @@
 {"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
 {"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
 {"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
+{"level":"error","message":"Error logging in: column \"user_role\" does not exist"}

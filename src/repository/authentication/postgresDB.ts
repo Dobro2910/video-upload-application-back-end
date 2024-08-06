@@ -15,7 +15,7 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
         let postgresDB;
         try {
             postgresDB = await this.pool.connect();
-            const result = await postgresDB.query('SELECT user_id, user_password, user_role FROM users WHERE user_email = $1', [userEmail]);
+            const result = await postgresDB.query('SELECT user_id, user_password, user_role FROM users_prod WHERE user_email = $1', [userEmail]);
 
             if (result.rows.length !== 1) {
                 return null;
@@ -47,7 +47,7 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
         let postgresDB;
         try {
             postgresDB = await this.pool.connect();
-            const result = await postgresDB.query('SELECT * FROM users WHERE user_email = $1', [userEmail]);
+            const result = await postgresDB.query('SELECT * FROM users_prod WHERE user_email = $1', [userEmail]);
 
             if (result.rows.length > 0) {
                 return result.rows[0] as User;
@@ -78,7 +78,7 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
             }
 
             const hashedPassword = await bcrypt.hash(user.userPassword, 10);
-            await postgresDB.query('INSERT INTO users (user_name, user_email, user_password, user_role) VALUES ($1, $2, $3, $4)', [user.userName, user.userEmail, hashedPassword, user.userRole]);
+            await postgresDB.query('INSERT INTO users_prod (user_name, user_email, user_password, user_role) VALUES ($1, $2, $3, $4)', [user.userName, user.userEmail, hashedPassword, user.userRole]);
 
             return 'Successful Registration';
         } catch (error) {
@@ -95,7 +95,7 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
         try {
             postgresDB = await this.pool.connect();
             const hashedPassword = await bcrypt.hash(newPassword, 10);
-            await postgresDB.query('UPDATE users SET user_password = $1 WHERE user_email = $2', [hashedPassword, userEmail]);
+            await postgresDB.query('UPDATE users_prod SET user_password = $1 WHERE user_email = $2', [hashedPassword, userEmail]);
         } catch (error) {
             throw error;
         } finally {

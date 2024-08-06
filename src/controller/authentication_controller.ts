@@ -49,12 +49,13 @@ export class AuthenticationController {
             const userName = req.body.userName;
             const userEmail = req.body.userEmail;
             const userPassword = req.body.userPassword;
+            const userRole = req.body.userRole;
 
             const newUser: User = {
                 userName: userName,
                 userEmail: userEmail,
                 userPassword: userPassword,
-                userRole: UserRole.User
+                userRole: userRole
             };
             
             const createdUser: string | null = await this.authenticationService.createUser(newUser);
