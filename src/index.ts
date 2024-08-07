@@ -40,22 +40,22 @@ const authenticationService = new AuthenticationService(authenticationRepository
 const authenticationController = new AuthenticationController(authenticationService);
 
 app.post("/authentication/login", (req: Request, res: Response) => authenticationController.login(req, res));
-app.get("/authentication/:userEmail", (req: Request, res: Response) => authenticationController.findUserByEmail(req, res));
 app.post("/authentication/createuser", (req: Request, res: Response) => authenticationController.createUser(req, res));
 app.put("/authentication/updatePassword/:userEmail", (req: Request, res: Response) => authenticationController.updateUserPassword(req, res));
+// app.get("/authentication/:userEmail", (req: Request, res: Response) => authenticationController.getUserByEmail(req, res));
 
 // Product
 const productRepository = new ProductRepositoryImplPostgres(pool);
 const productService = new ProductService(productRepository);
 const productController = new ProductController(productService);
 
-app.get("/product/allproduct", (req: Request, res: Response) => productController.getAllProduct(req, res));
 app.get("/product/getpaginatedproduct", (req: Request, res: Response) => productController.getPaginatedProducts(req, res));
-app.get("/product/:productId", (req: Request, res: Response) => productController.getProductInfo(req, res));
-app.get("/product/search/filter", (req: Request, res: Response) => productController.findProductByFilter(req, res));
+app.get("/product/search/filter", (req: Request, res: Response) => productController.getPaginatedProductsByFilter(req, res));
+// app.get("/product/allproduct", (req: Request, res: Response) => productController.getAllProduct(req, res));
+// app.get("/product/:productId", (req: Request, res: Response) => productController.getProductInfo(req, res));
 
-app.post("/product/createproduct", jwtMiddleware, (req: Request, res: Response) => productController.createProduct(req, res));
-app.put("/product/updateproductstock/:productId", jwtMiddleware, (req: Request, res: Response) => productController.updateProductStock(req, res));
-app.delete("/product/delete/:productId", jwtMiddleware, (req: Request, res: Response) => productController.deleteProduct(req, res));
+// app.post("/product/createproduct", jwtMiddleware, (req: Request, res: Response) => productController.createProduct(req, res));
+// app.put("/product/updateproductcolorvarietydetail/:productId", jwtMiddleware, (req: Request, res: Response) => productController.updateProductStock(req, res));
+// app.delete("/product/delete/:productId", jwtMiddleware, (req: Request, res: Response) => productController.deleteProduct(req, res));
 
 app.listen(port, () => {console.log(`Server is running on http://localhost:${port}`);});

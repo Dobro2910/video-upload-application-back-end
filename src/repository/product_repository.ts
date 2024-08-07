@@ -1,18 +1,18 @@
 import { Product } from "../model/product_model";
+import { ProductColorVarietyDetail } from "../model/product_model";
+import { ProductDisplay } from "../model/product_model";
 
 // This is the repository layer. It is responsible for handling database operations.
 export interface ProductRepository {
-    getAllProduct(): Promise<Product[] | null>;
-    getPaginatedProducts(page: number): Promise<Product[] | null>;
-    getProductInfo(productId: string): Promise<Product | null>;
-    findProductByFilter(
+    getPaginatedProducts(page: number): Promise<ProductDisplay[] | null>;
+    getPaginatedProductsByFilter(
                         filterPage: number,
                         productPrice: number | undefined,
                         productSize?: string | null,
                         productCategory?: string | null,
                         productGender?: string | null,
-                        productBrand?: string | null): Promise<Product[] | null>;
-    createProduct(product: Product): Promise<string | null>;
-    updateProductStock(productId: string, productStock: number): Promise<void>;
-    deleteProduct(productId: string): Promise<void>;
+                        productBrand?: string | null): Promise<ProductDisplay[] | null>;
+    // createProduct(product: Product): Promise<string | null>;
+    // updateProductColorVarietyDetail(productId: string, productColorVarietyDetail: ProductColorVarietyDetail): Promise<void>;
+    // deleteProduct(productId: string): Promise<void>;
 }

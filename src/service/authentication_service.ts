@@ -13,20 +13,12 @@ export class AuthenticationService {
         return await this.authenticationRepository.login(userEmail, newPassword);
     }
 
-    async findUserByEmail(userEmail: string): Promise<User | null> {
-        return await this.authenticationRepository.findUserByEmail(userEmail);
+    async getUserByEmail(userEmail: string): Promise<User | null> {
+        return await this.authenticationRepository.getUserByEmail(userEmail);
     };
 
     async createUser(user: User): Promise<string | null> {
         return await this.authenticationRepository.createUser(user);
-
-        // const newUser: string | null = 
-        // just to ensure that newUser will never be null
-        // if (!newUser) {
-        //     throw new Error('Failed to create user');
-        // }
-
-        // return newUser;
     }
 
     async updateUserPassword(userEmail: string, newPassword: string): Promise<void> {
