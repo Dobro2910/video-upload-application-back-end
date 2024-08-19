@@ -13,8 +13,7 @@ export class PaymentController {
 
     async saveProductsOrder(req: Request, res: Response) {
         try {
-            const paymentsOrder: PaymentOrder[] = req.body;  // Assuming the array of orders is sent in the body
-            
+            const paymentsOrder: PaymentOrder[] = req.body; // Assuming the array of orders is sent in the body
             const savedOrder: string | null = await this.paymentService.savePaymentOrder(paymentsOrder);
     
             // Check if the order was saved successfully
