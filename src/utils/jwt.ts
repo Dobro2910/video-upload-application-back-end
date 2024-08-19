@@ -10,6 +10,7 @@ export class JwtUtils {
 
     static verifyToken(token: string): JwtPayload | null {
         try {
+            // verify the token and its expire time limit
             const decoded = jwt.verify(token, SECRET_KEY as string);
             if (typeof decoded === 'string') {
                 return null; // In case the decoded token is a string, return null

@@ -16,6 +16,12 @@ import { ProductRepositoryImplPostgres } from './repository/product/postgresDB';
 import { ProductService } from './service/product_service';
 import { ProductController } from './controller/product_controller';
 
+// import stripe payment
+import { StripeController } from './third_party_controller/stripe_controller';
+import { PaymentRepositoryImplPostgres } from './repository/payment/postgresDB';
+import { PaymentService } from './service/payment_service';
+import { PaymentController } from './controller/payment_controller';
+
 // Load environment variables
 dotenv.config();
 
@@ -57,5 +63,18 @@ app.get("/product/search/filter", (req: Request, res: Response) => productContro
 // app.post("/product/createproduct", jwtMiddleware, (req: Request, res: Response) => productController.createProduct(req, res));
 // app.put("/product/updateproductcolorvarietydetail/:productId", jwtMiddleware, (req: Request, res: Response) => productController.updateProductStock(req, res));
 // app.delete("/product/delete/:productId", jwtMiddleware, (req: Request, res: Response) => productController.deleteProduct(req, res));
+
+// Payment
+const paymentRepository = new PaymentRepositoryImplPostgres(pool);
+const paymentService = new PaymentService(paymentRepository);
+const paymentController = new PaymentController(paymentService);
+
+// app.post("/payment/saveorder", jwtMiddleware(['User', 'Seller', 'Admin']), (req: Request, res: Response) => paymentController.saveProductsOrder(req, res));
+app.post("/payment/saveorder", (req: Request, res: Response) => paymentController.saveProductsOrder(req, res));
+
+// calling api from other services
+
+// stripe payment
+app.post('/create-payment-intent', (req: Request, res: Response) => StripeController.createPaymentIntent(req, res));
 
 app.listen(port, () => {console.log(`Server is running on http://localhost:${port}`);});

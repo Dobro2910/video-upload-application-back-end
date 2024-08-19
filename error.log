@@ -116,3 +116,9 @@
 {"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
 {"level":"error","message":"Error finding product by filter: invalid input syntax for type bigint: \"NaN\""}
 {"level":"error","message":"Error logging in: column \"user_role\" does not exist"}
+{"level":"error","message":"Error saving product order: paymentsOrder is not iterable"}
+{"level":"error","message":"Error saving payment order: paymentsOrder is not iterable"}
+{"level":"error","message":"Error saving payment order: operator does not exist: integer[] - unknown"}
+{"level":"error","message":"Error saving payment order: operator does not exist: integer[] - unknown"}
+{"level":"error","message":"Error saving payment order: array subscript in assignment must not be null"}
+{"level":"error","message":"Error saving payment order: array subscript in assignment must not be null"}

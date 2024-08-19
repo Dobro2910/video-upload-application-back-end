@@ -13,7 +13,7 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
         let postgresDB;
         try {
             postgresDB = await this.pool.connect();
-            const limit = 18;
+            const limit = 15; 
             // calculate the 18 products we need to take for n pages
             const pageRange = (page - 1) * limit;
             const query = `
@@ -47,40 +47,6 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
             }
 
             return result.rows;
-
-            // console.log(result.rows);
-    
-            // // Transform the data to match the ProductDisplay interface
-            // const products = result.rows.map(row => {
-            //     const productColorVarietyDetailMap: { [key: string]: ProductColorVarietyDetail } = {};
-    
-            //     row.productcolorvarietydetail.forEach((productDetail: any) => {
-            //         // if there are no color, insert the product detail in the map
-            //         if (!productColorVarietyDetailMap[productDetail.productColor]) {
-            //             productColorVarietyDetailMap[productDetail.productColor] = {
-            //                 productColor: productDetail.productColor,
-            //                 productSize: productDetail.productSize,
-            //                 productStock: productDetail.productStock
-            //             };
-            //         } else {
-            //             productColorVarietyDetailMap[productDetail.productColor].productSize.push(...productDetail.productSize);
-            //             productColorVarietyDetailMap[productDetail.productColor].productStock.push(...productDetail.productStock);
-            //         }
-            //     });
-    
-            //     return {
-            //         productId: row.product_id,
-            //         productName: row.product_name,
-            //         productDescription: row.product_description,
-            //         productPrice: row.product_price,
-            //         productGender: row.product_gender,
-            //         productImage: row.product_image,
-            //         productAmountSold: row.product_amount_sold,
-            //         productColorVarietyDetail: Object.values(productColorVarietyDetailMap)
-            //     };
-            // });
-    
-            // return products;
         } catch (error) {
             throw error;
         } finally {
@@ -99,7 +65,7 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
         productBrand?: string | null): Promise<ProductDisplay[] | null> {
         let postgresDB;
         try {
-            // if there are no input, return pagination of all products
+            // if there are no inputs, return pagination of all products
             if (!productPrice && !productSize && !productCategory && !productGender && !productBrand) {
                 return await this.getPaginatedProducts(filterPage);
             }
@@ -107,38 +73,37 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
             const conditions: string[] = [];
             const values: (string | number)[] = [];
             let index = 0;
-
+    
             if (productPrice !== undefined) {
                 index++;
-                conditions.push('p.product_price = $' + (index).toString());
+                conditions.push('p.product_price = $' + index);
                 values.push(productPrice);
             }
-
+    
             if (productSize) {
                 index++;
-                // conditions.push('pcvd.product_size = $' + (index).toString() + ' = ANY (product_size)');
-                conditions.push('$' + (index).toString() + ' = ANY (p.product_size)');
+                conditions.push(`$${index} = ANY(pcvd.product_size)`);
                 values.push(productSize);
             }
-
+    
             if (productCategory) {
                 index++;
-                conditions.push('p.product_category = $' + (index).toString());
+                conditions.push('p.product_category = $' + index);
                 values.push(productCategory);
             }
-
+    
             if (productGender) {
                 index++;
-                conditions.push('p.product_gender = $' + (index).toString());
+                conditions.push('p.product_gender = $' + index);
                 values.push(productGender);
             }
-
+    
             if (productBrand) {
                 index++;
-                conditions.push('p.product_brand = $' + (index).toString());
+                conditions.push('p.product_brand = $' + index);
                 values.push(productBrand);
             }
-
+    
             let query = `
                         SELECT 
                             p.product_id AS "productId", 
@@ -158,24 +123,25 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
                         LEFT JOIN 
                             products_color_variety_detail_prod pcvd ON p.product_id = pcvd.product_id
                         `;
-            const limit = 18; 
+
+            if (conditions.length > 0) {
+                query += 'WHERE ' + conditions.join(' AND ') + ' ';
+            }
+
+            const limit = 15; 
             // calculate the 18 products we need to take for n pages
             const pageRange = (filterPage - 1) * limit;
-
-            query += 'WHERE ' + conditions.join(' AND ') + `
-                        `;
             query += `GROUP BY p.product_id
                         ORDER BY p.product_id
-                        ` + 'LIMIT $' + (++index).toString() + ' OFFSET $' + (++index).toString();
-            values.push(limit)
-            values.push(pageRange)
-
+                        LIMIT $${++index} OFFSET $${++index}`;
+            values.push(limit, pageRange);
+    
             const result = await postgresDB.query(query, values);
-
+    
             if (result.rowCount === 0) {
                 return null;
             }
-
+    
             return result.rows;
         } catch (error) {
             throw error;
@@ -184,7 +150,7 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
                 postgresDB.release();
             }
         }
-    }
+    }    
 
     // // Protected Endpoint
     // async createProduct(product: Product): Promise<string | null> {
