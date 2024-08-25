@@ -49,6 +49,34 @@ export class AuthenticationController {
             const userName = req.body.userName;
             const userEmail = req.body.userEmail;
             const userPassword = req.body.userPassword;
+            // const userRole = req.body.userRole;
+
+            const newUser: User = {
+                userName: userName,
+                userEmail: userEmail,
+                userPassword: userPassword,
+                userRole: UserRole.User
+            };
+            
+            const createdUser: string | null = await this.authenticationService.createUser(newUser);
+
+            if (!createdUser) {
+                res.status(401).json({ error: 'Authentication failed: Email Already Exist' });
+            } else {
+                res.status(200).json({ message: 'Successful Registration' });
+            }
+
+        } catch(error) {
+            logger.error(`Error creating user: ${(error as Error).message}`);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
+    async createAdminRole(req: Request, res: Response) {
+        try {
+            const userName = req.body.userName;
+            const userEmail = req.body.userEmail;
+            const userPassword = req.body.userPassword;
             const userRole = req.body.userRole;
 
             const newUser: User = {

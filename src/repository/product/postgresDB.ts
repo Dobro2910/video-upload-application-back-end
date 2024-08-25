@@ -152,7 +152,7 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
         }
     }    
 
-    // // Protected Endpoint
+    // Protected Endpoint
     // async createProduct(product: Product): Promise<string | null> {
     //     let postgresDB;
     //     try {
