@@ -70,8 +70,8 @@ const paymentRepository = new PaymentRepositoryImplPostgres(pool);
 const paymentService = new PaymentService(paymentRepository);
 const paymentController = new PaymentController(paymentService);
 
-// app.post("/payment/saveorder", jwtMiddleware(['User', 'Seller', 'Admin']), (req: Request, res: Response) => paymentController.saveProductsOrder(req, res));
-app.post("/payment/saveorder", (req: Request, res: Response) => paymentController.saveProductsOrder(req, res));
+app.post("/payment/saveorder", jwtMiddleware(['User', 'Seller', 'Admin']), (req: Request, res: Response) => paymentController.saveProductsOrder(req, res));
+// app.post("/payment/saveorder", (req: Request, res: Response) => paymentController.saveProductsOrder(req, res));
 
 // calling api from other services
 

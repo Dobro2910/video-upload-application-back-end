@@ -7,7 +7,7 @@ export interface PaymentOrder {
     productImage: string;
     productColor: string | null;
     productSize: string | null;
-    productQuantity: number;  // Add this field
+    productQuantity: number;
 }
 
 export function validatePaymentOrder(paymentOrder: PaymentOrder): string {

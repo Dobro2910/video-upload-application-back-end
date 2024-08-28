@@ -58,8 +58,6 @@ export class PaymentRepositoryImplPostgres implements PaymentRepository {
                     WHERE product_id = $2`,
                     [paymentOrder.productQuantity, paymentOrder.productId]
                 );
-
-                console.log("4");
     
                 // Update productStock in the products_color_variety_detail_prod table
                 await postgresDB.query(
