@@ -51,53 +51,51 @@ export class ProductController {
         } 
     }
 
-    // async createProduct(req: Request, res: Response) {
-    //     try {
-    //         const {
-    //             productName,
-    //             productBrand,
-    //             productCategory,
-    //             productColor,
-    //             productDescription,
-    //             productGender,
-    //             productImage,
-    //             productPrice,
-    //             productSize,
-    //             productStock
-    //         } = req.body;
+    async createProduct(req: Request, res: Response) {
+        try {
+            const {
+                productName,
+                productBrand,
+                productCategory,
+                productDescription,
+                productGender,
+                productImage,
+                productPrice,
+                productSize,
+                productColorVarietyDetail,
+            } = req.body;
             
-    //         const productCreatedAt: Date = new Date();
-    //         const productAmountSold: number = 0;
+            const productCreatedAt: Date = new Date();
+            const productAmountSold: number = 0;
 
-    //         // Create the Product object
-    //         const product: Product = {
-    //             productName,
-    //             productBrand,
-    //             productCategory,
-    //             productColor,
-    //             productDescription,
-    //             productGender,
-    //             productImage,
-    //             productPrice,
-    //             productSize,
-    //             productStock,
-    //             productCreatedAt,
-    //             productAmountSold
-    //         };
+            // Create the Product object
+            const product: Product = {
+                productName,
+                productBrand,
+                productCategory,
+                productDescription,
+                productGender,
+                productImage,
+                productPrice,
+                productSize,
+                productCreatedAt,
+                productAmountSold,
+                productColorVarietyDetail
+            };
     
-    //         // Call ProductService to create the product
-    //         const result = await this.productService.createProduct(product);
+            // Call ProductService to create the product
+            const result = await this.productService.createProduct(product);
     
-    //         if (!result) {
-    //             res.status(401).json({ error: 'Create product failed: Validation fail' });
-    //         } else {
-    //             res.status(200).json({ message: 'Successful Registration' });
-    //         }
-    //     } catch(error) {
-    //         logger.error(`Error creating product: ${(error as Error).message}`);
-    //         res.status(500).json({ error: 'Internal Server Error' });
-    //     }
-    // }
+            if (!result) {
+                res.status(401).json({ error: 'Create product failed: Validation fail' });
+            } else {
+                res.status(200).json({ message: 'Successful Registration' });
+            }
+        } catch(error) {
+            logger.error(`Error creating product: ${(error as Error).message}`);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
 
     // async updateProductStock(req: Request, res: Response) {
     //     try {

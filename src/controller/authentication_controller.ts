@@ -44,12 +44,11 @@ export class AuthenticationController {
         }
     }
 
-    async createUser(req: Request, res: Response) {
+    async createUserRole(req: Request, res: Response) {
         try {
             const userName = req.body.userName;
             const userEmail = req.body.userEmail;
             const userPassword = req.body.userPassword;
-            // const userRole = req.body.userRole;
 
             const newUser: User = {
                 userName: userName,

@@ -46,7 +46,7 @@ const authenticationService = new AuthenticationService(authenticationRepository
 const authenticationController = new AuthenticationController(authenticationService);
 
 app.post("/authentication/login", (req: Request, res: Response) => authenticationController.login(req, res));
-app.post("/authentication/createuser", (req: Request, res: Response) => authenticationController.createUser(req, res));
+app.post("/authentication/createuser", (req: Request, res: Response) => authenticationController.createUserRole(req, res));
 app.post("/authentication/createadminrole", jwtMiddleware(['Admin']), (req: Request, res: Response) => authenticationController.createAdminRole(req, res));
 app.put("/authentication/updatePassword/:userEmail", (req: Request, res: Response) => authenticationController.updateUserPassword(req, res));
 // app.get("/authentication/:userEmail", (req: Request, res: Response) => authenticationController.getUserByEmail(req, res));
@@ -61,7 +61,8 @@ app.get("/product/search/filter", (req: Request, res: Response) => productContro
 // app.get("/product/allproduct", (req: Request, res: Response) => productController.getAllProduct(req, res));
 // app.get("/product/:productId", (req: Request, res: Response) => productController.getProductInfo(req, res));
 
-// app.post("/product/createproduct", jwtMiddleware(['Seller', 'Admin']), (req: Request, res: Response) => productController.createProduct(req, res));
+app.post("/product/createproduct", jwtMiddleware(['Seller', 'Admin']), (req: Request, res: Response) => productController.createProduct(req, res));
+// app.post("/product/createproduct", (req: Request, res: Response) => productController.createProduct(req, res));
 // app.put("/product/updateproductcolorvarietydetail/:productId", jwtMiddleware, (req: Request, res: Response) => productController.updateProductStock(req, res));
 // app.delete("/product/delete/:productId", jwtMiddleware(['Seller', 'Admin']), (req: Request, res: Response) => productController.deleteProduct(req, res));
 

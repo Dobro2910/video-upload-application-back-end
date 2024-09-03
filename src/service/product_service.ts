@@ -23,9 +23,9 @@ export class ProductService {
         return await this.productRepository.getPaginatedProductsByFilter(filterPage, productPrice, productSize, productCategory, productGender, productBrand);
     }
     
-    // async createProduct(product: Product): Promise<string | null> {
-    //     return await this.productRepository.createProduct(product);
-    // }
+    async createProduct(product: Product): Promise<string | null> {
+        return await this.productRepository.createProduct(product);
+    }
 
     // async updateProductStock(productId: string, productColorVarietyDetail: ProductColorVarietyDetail): Promise<void> {
     //     return await this.productRepository.updateProductColorVarietyDetail(productId, productColorVarietyDetail);
