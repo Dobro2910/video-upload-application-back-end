@@ -153,45 +153,97 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
     }    
 
     // Protected Endpoint
-    // async createProduct(product: Product): Promise<string | null> {
-    //     let postgresDB;
-    //     try {
-    //         postgresDB = await this.pool.connect();
-    //         const validationError = validateProduct(product);
-    //         if (validationError) {
-    //             throw new Error(validationError);
-    //         }
+    async createProduct(product: Product): Promise<string | null> {
+        let postgresDB;
+        try {
+            postgresDB = await this.pool.connect();
+            const validationError = validateProduct(product);
+            if (validationError) {
+                throw new Error(validationError);
+            }
 
-    //         await postgresDB.query(
-    //             'INSERT INTO products (product_name, product_brand, product_category, product_color, ' +
-    //             'product_description, product_gender, product_image, product_price, product_size, ' +
-    //             'product_stock, product_created_at, product_amount_sold) ' +
-    //             'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
-    //             [
-    //                 product.productName,
-    //                 product.productBrand,
-    //                 product.productCategory,
-    //                 product.productColor,
-    //                 product.productDescription,
-    //                 product.productGender,
-    //                 product.productImage,
-    //                 product.productPrice,
-    //                 product.productSize,
-    //                 product.productStock,
-    //                 product.productCreatedAt,
-    //                 product.productAmountSold
-    //             ]
-    //         );
+            if (product.productColorVarietyDetail) {
+                for (let i = 0; i < product.productColorVarietyDetail.length; i++) {
+                    const productVarietyValidationError = validateProductColorVarietyDetail(product.productColorVarietyDetail[i]);
+                    if (productVarietyValidationError) {
+                        throw new Error(productVarietyValidationError);
+                    }
+                }
+            } else {
+                throw new Error("productColorVarietyDetail can't be null");
+            }
 
-    //         return 'Successful Create Product';
-    //     } catch (error) {
-    //         throw error;
-    //     } finally {
-    //         if (postgresDB) {
-    //             postgresDB.release();
-    //         }
-    //     }
-    // }
+            // Start a transaction
+            await postgresDB.query('BEGIN');
+
+            // Assuming you have a function that handles the database query
+            const productResult = await postgresDB.query(
+                `INSERT INTO products_prod (
+                    product_name, 
+                    product_brand, 
+                    product_category, 
+                    product_description, 
+                    product_gender, 
+                    product_image, 
+                    product_price, 
+                    product_size, 
+                    product_created_time, 
+                    product_updated_time, 
+                    product_amount_sold
+                ) VALUES (
+                    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+                ) RETURNING product_id`,
+                [
+                    product.productName,
+                    product.productBrand,
+                    product.productCategory,
+                    product.productDescription,
+                    product.productGender,
+                    product.productImage,
+                    product.productPrice,
+                    product.productSize, // This is an array
+                    product.productCreatedAt || new Date(), // Use current date if not provided
+                    product.productUpdatedAt || new Date(), // Use current date if not provided
+                    product.productAmountSold || 0 // Default to 0 if not provided
+                ]
+            );
+
+            // Get the generated product ID
+            const productId = productResult.rows[0].product_id;
+
+            if (product.productColorVarietyDetail && productId) {
+                for (const variety of product.productColorVarietyDetail) {
+                    await postgresDB.query(
+                        `INSERT INTO products_color_variety_detail_prod (
+                            product_id, 
+                            product_color, 
+                            product_size, 
+                            product_stock
+                        ) VALUES (
+                            $1, $2, $3, $4
+                        )`,
+                        [
+                            productId, 
+                            variety.productColor, 
+                            variety.productSize, // This is an array
+                            variety.productStock // This is an array
+                        ]
+                    );
+                }
+            }
+
+            // Commit the transaction
+            await postgresDB.query('COMMIT');          
+
+            return 'Successful Create Product';
+        } catch (error) {
+            throw error;
+        } finally {
+            if (postgresDB) {
+                postgresDB.release();
+            }
+        }
+    }
 
     // async updateProductColorVarietyDetail(productId: string, productColorVarietyDetail: ProductColorVarietyDetail): Promise<void> {
     //     let postgresDB;

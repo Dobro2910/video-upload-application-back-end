@@ -21,10 +21,6 @@ export class AuthenticationService {
         return await this.authenticationRepository.createUser(user);
     }
 
-    async createAdminRole(user: User): Promise<string | null> {
-        return await this.authenticationRepository.createAdminRole(user);
-    }
-
     async updateUserPassword(userEmail: string, newPassword: string): Promise<void> {
         await this.authenticationRepository.updateUserPassword(userEmail, newPassword);
     };

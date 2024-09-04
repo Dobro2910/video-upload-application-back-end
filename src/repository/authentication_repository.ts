@@ -5,6 +5,5 @@ export interface AuthenticationRepository {
     login(userEmail: string, newPassword: string): Promise<string | null>;
     getUserByEmail(userEmail: string): Promise<User | null>;
     createUser(user: User): Promise<string | null>;
-    createAdminRole(user: User): Promise<string | null>;
     updateUserPassword(userEmail: string, newPassword: string): Promise<void>;
 }

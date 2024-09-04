@@ -12,7 +12,7 @@ export interface ProductRepository {
                         productCategory?: string | null,
                         productGender?: string | null,
                         productBrand?: string | null): Promise<ProductDisplay[] | null>;
-    // createProduct(product: Product): Promise<string | null>;
+    createProduct(product: Product): Promise<string | null>;
     // updateProductColorVarietyDetail(productId: string, productColorVarietyDetail: ProductColorVarietyDetail): Promise<void>;
     // deleteProduct(productId: string): Promise<void>;
 }

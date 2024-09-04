@@ -90,33 +90,6 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
         }
     }
 
-    async createAdminRole(user: User): Promise<string | null> {
-        let postgresDB;
-        try {
-            postgresDB = await this.pool.connect();
-            const validationError = validate(user);
-            if (validationError) {
-                throw new Error(validationError);
-            }
-
-            const existingUser = await this.getUserByEmail(user.userEmail);
-            if (existingUser) {
-                return null;
-            }
-
-            const hashedPassword = await bcrypt.hash(user.userPassword, 10);
-            await postgresDB.query('INSERT INTO users_prod (user_name, user_email, user_password, user_role) VALUES ($1, $2, $3, $4)', [user.userName, user.userEmail, hashedPassword, user.userRole]);
-
-            return 'Successful Registration';
-        } catch (error) {
-            throw error;
-        } finally {
-            if (postgresDB) {
-                postgresDB.release();
-            }
-        }
-    }
-
     async updateUserPassword(userEmail: string, newPassword: string): Promise<void> {
         let postgresDB;
         try {
