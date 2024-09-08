@@ -11,6 +11,15 @@ export interface User {
     userEmail: string;
     userPassword: string;
     userRole: string;
+    userImage?: string;
+}
+
+// Update user interface
+export interface UserProfile {
+    userName?: string;
+    userEmail?: string;
+    userRole?: string;
+    userImage?: string;
 }
 
 // Model validation

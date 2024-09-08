@@ -1,5 +1,5 @@
 import { AuthenticationRepository } from "../repository/authentication_repository";
-import { User } from "../model/user_model";
+import { User, UserProfile } from "../model/user_model";
 
 export class AuthenticationService {
     // this is used to insert existing authentication Repo inside so as not to create a new Authentication Repo everytime
@@ -13,9 +13,9 @@ export class AuthenticationService {
         return await this.authenticationRepository.login(userEmail, newPassword);
     }
 
-    async getUserByEmail(userEmail: string): Promise<User | null> {
+    async getUserByEmail(userEmail: string): Promise<UserProfile | null> {
         return await this.authenticationRepository.getUserByEmail(userEmail);
-    };
+    }
 
     async createUser(user: User): Promise<string | null> {
         return await this.authenticationRepository.createUser(user);
@@ -23,5 +23,9 @@ export class AuthenticationService {
 
     async updateUserPassword(userEmail: string, newPassword: string): Promise<void> {
         await this.authenticationRepository.updateUserPassword(userEmail, newPassword);
-    };
+    }
+
+    async updateUserProfile(user: UserProfile, userEmail: string): Promise<void> {
+        await this.authenticationRepository.updateUserProfile(user, userEmail);
+    }
 }
