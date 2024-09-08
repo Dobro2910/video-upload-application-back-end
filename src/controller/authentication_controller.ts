@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { User, UserRole } from '../model/user_model';
+import { UserProfile, User, UserRole } from '../model/user_model';
 import { AuthenticationService } from "../service/authentication_service";
 import logger from '../utils/logger';
 
@@ -31,12 +31,14 @@ export class AuthenticationController {
     async getUserByEmail(req: Request, res: Response) {
         try {
             const userEmail = req.params.userEmail;
-            const user: User | null = await this.authenticationService.getUserByEmail(userEmail);
+            const user: UserProfile | null = await this.authenticationService.getUserByEmail(userEmail);
+
+            console.log(user);
 
             if (user) {
-                res.status(200).send(user);
+                res.status(200).json({ user });
             } else {
-                res.status(404).send('User not found');
+                res.status(404).json({ error: 'User not found' });
             }
         } catch(error) {
             logger.error(`Error finding user: ${(error as Error).message}`);
@@ -104,6 +106,28 @@ export class AuthenticationController {
             const userEmail = req.params.userEmail;
             const newPassword = req.body.userPassword;
             await this.authenticationService.updateUserPassword(userEmail, newPassword);
+
+            res.status(200).send("OK");
+        } catch(error) {
+            logger.error(`Error updating password: ${(error as Error).message}`)
+            res.status(500).send('Internal Server Error');
+        }
+    };
+
+    async updateUserProfile(req: Request, res: Response) {
+        try {
+            const userEmail = req.params.userEmail;
+            const userName = req.body.userName;
+            const userUpdateEmail = req.body.userEmail;
+            const userImage = req.body.userImage;
+
+            const newUserProfile: UserProfile = {
+                userName: userName,
+                userEmail: userUpdateEmail,
+                userImage: userImage
+            };
+
+            await this.authenticationService.updateUserProfile(newUserProfile, userEmail);
 
             res.status(200).send("OK");
         } catch(error) {

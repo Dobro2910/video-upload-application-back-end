@@ -82987,3 +82987,4 @@
 {"level":"error","message":"Error saving payment order: paymentsOrder is not iterable"}
 {"level":"error","message":"Error creating product: column \"product_created_tin\" of relation \"products_prod\" does not exist"}
 {"level":"error","message":"Error creating product: duplicate key value violates unique constraint \"product_color_variety_detail_prod_pkey\""}
+{"level":"error","message":"Error creating product: Product name is required."}
