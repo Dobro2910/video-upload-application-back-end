@@ -33,8 +33,6 @@ export class AuthenticationController {
             const userEmail = req.params.userEmail;
             const user: UserProfile | null = await this.authenticationService.getUserByEmail(userEmail);
 
-            console.log(user);
-
             if (user) {
                 res.status(200).json({ user });
             } else {

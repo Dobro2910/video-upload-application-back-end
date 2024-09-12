@@ -18,8 +18,7 @@ export interface User {
 export interface UserProfile {
     userName?: string;
     userEmail?: string;
-    userRole?: string;
-    userImage?: string;
+    userImage?: File;
 }
 
 // Model validation
