@@ -1,5 +1,5 @@
 import { AuthenticationRepository } from '../authentication_repository';
-import { User, validate, UserProfile } from '../../model/user_model';
+import { User, validate, UpdateProfile } from '../../model/user_model';
 import { Pool } from 'pg';
 import bcrypt from 'bcrypt';
 import { JwtUtils } from "../../utils/jwt";
@@ -44,7 +44,7 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
         }
     }
 
-    async getUserByEmail(userEmail: string): Promise<UserProfile | null> {
+    async getUserByEmail(userEmail: string): Promise<UpdateProfile | null> {
         let postgresDB;
         try {
             postgresDB = await this.pool.connect();
@@ -61,7 +61,7 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
                     userEmail: user.user_email,  // Assuming the field is named userEmail
                     userRole: user.user_role,    // Assuming the field is named userRole
                     userImage: user.user_image   // Assuming the field is named userImage
-                } as UserProfile;
+                } as UpdateProfile;
             }
 
             return null;
@@ -117,7 +117,7 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
         }
     }
 
-    async updateUserProfile(user: UserProfile, userEmail: string): Promise<void> {
+    async updateUserProfile(user: UpdateProfile, userEmail: string): Promise<string | null> {
         let postgresDB;
         try {
             postgresDB = await this.pool.connect();
@@ -127,11 +127,18 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
                 throw new Error('Invalid user data provided');
             }
 
+            const existingUser = await this.getUserByEmail(user.userEmail);
+            if (existingUser) {
+                return null;
+            }
+
             // Perform the update query
             await postgresDB.query(
                 'UPDATE users_prod SET user_name = $1, user_email = $2, user_image = $3 WHERE user_email = $4',
                 [user.userName, user.userEmail, user.userImage, userEmail]
             );
+
+            return 'Update User Successful';
         } catch (error) {
             throw error;
         } finally {

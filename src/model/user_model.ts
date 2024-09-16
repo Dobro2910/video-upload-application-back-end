@@ -15,10 +15,10 @@ export interface User {
 }
 
 // Update user interface
-export interface UserProfile {
+export interface UpdateProfile {
     userName?: string;
     userEmail?: string;
-    userImage?: File;
+    userImage?: string;
 }
 
 // Model validation

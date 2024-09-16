@@ -1,7 +1,14 @@
+// Load environment variables
+import dotenv from "dotenv";
+dotenv.config();
+
+// import multer to handle uploading files in the backend to aws S3
+import multer from 'multer';
+const upload = multer(); // Use memory storage for uploading to S3
+
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import pool from './config/postgresdb';
-import dotenv from "dotenv";
 
 // JWT Protected Route
 import jwtMiddleware from './middleware/jwtMiddleware'
@@ -21,9 +28,6 @@ import { StripeController } from './third_party_controller/stripe_controller';
 import { PaymentRepositoryImplPostgres } from './repository/payment/postgresDB';
 import { PaymentService } from './service/payment_service';
 import { PaymentController } from './controller/payment_controller';
-
-// Load environment variables
-dotenv.config();
 
 const app: Express = express();
 
@@ -48,7 +52,7 @@ const authenticationController = new AuthenticationController(authenticationServ
 app.post("/authentication/login", (req: Request, res: Response) => authenticationController.login(req, res));
 app.post("/authentication/createuser", (req: Request, res: Response) => authenticationController.createUserRole(req, res));
 app.put("/authentication/updatePassword/:userEmail", (req: Request, res: Response) => authenticationController.updateUserPassword(req, res));
-app.put("/authentication/updateProfile/:userEmail", jwtMiddleware(['User', 'Seller', 'Admin']), (req: Request, res: Response) => authenticationController.updateUserProfile(req, res));
+app.put("/authentication/updateProfile/:userEmail", jwtMiddleware(['User', 'Seller', 'Admin']), upload.single('userImage'), (req: Request, res: Response) => authenticationController.updateUserProfile(req, res));
 app.get("/authentication/getprofile/:userEmail", jwtMiddleware(['User', 'Seller', 'Admin']), (req: Request, res: Response) => authenticationController.getUserByEmail(req, res));
 app.post("/authentication/createadminrole", jwtMiddleware(['Admin']), (req: Request, res: Response) => authenticationController.createAdminRole(req, res));
 

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import { UserProfile, User, UserRole } from '../model/user_model';
+import { UpdateProfile, User, UserRole } from '../model/user_model';
 import { AuthenticationService } from "../service/authentication_service";
+import { uploadUserImageToS3 } from '../third_party_service/aws_service';
 import logger from '../utils/logger';
 
 export class AuthenticationController {
@@ -31,7 +32,7 @@ export class AuthenticationController {
     async getUserByEmail(req: Request, res: Response) {
         try {
             const userEmail = req.params.userEmail;
-            const user: UserProfile | null = await this.authenticationService.getUserByEmail(userEmail);
+            const user: UpdateProfile | null = await this.authenticationService.getUserByEmail(userEmail);
 
             if (user) {
                 res.status(200).json({ user });
@@ -117,17 +118,26 @@ export class AuthenticationController {
             const userEmail = req.params.userEmail;
             const userName = req.body.userName;
             const userUpdateEmail = req.body.userEmail;
-            const userImage = req.body.userImage;
+            const userImage = req.file; 
+            if (!userImage) {
+                return res.status(400).send('No image file provided');
+            }
 
-            const newUserProfile: UserProfile = {
+            const useImageURL = await uploadUserImageToS3(userImage);
+            const newUserProfile: UpdateProfile = {
                 userName: userName,
                 userEmail: userUpdateEmail,
-                userImage: userImage
+                userImage: useImageURL
             };
 
-            await this.authenticationService.updateUserProfile(newUserProfile, userEmail);
+            const updatedUser: string | null = await this.authenticationService.updateUserProfile(newUserProfile, userEmail);
 
-            res.status(200).send("OK");
+            if (!updatedUser) {
+                res.status(401).json({ error: 'Authentication failed: Email Already Exist' });
+            } else {
+                res.status(200).json({ message: 'Update User Successful' });
+            }
+
         } catch(error) {
             logger.error(`Error updating password: ${(error as Error).message}`)
             res.status(500).send('Internal Server Error');
