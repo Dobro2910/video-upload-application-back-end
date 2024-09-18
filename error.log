@@ -82988,3 +82988,15 @@
 {"level":"error","message":"Error creating product: column \"product_created_tin\" of relation \"products_prod\" does not exist"}
 {"level":"error","message":"Error creating product: duplicate key value violates unique constraint \"product_color_variety_detail_prod_pkey\""}
 {"level":"error","message":"Error creating product: Product name is required."}
+{"level":"error","message":"Error logging in: SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"}
+{"level":"error","message":"Error logging in: SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"}
+{"level":"error","message":"Error logging in: SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"}
+{"level":"error","message":"Error logging in: SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"}
+{"level":"error","message":"Error updating password: Invalid user data provided"}
+{"level":"error","message":"Error updating password: Invalid user data provided"}
+{"level":"error","message":"Error updating password: Invalid user data provided"}
+{"level":"error","message":"Error updating user Profile: Invalid user data provided"}
+{"level":"error","message":"Error updating user Profile: Invalid user data provided"}
+{"level":"error","message":"Error updating user Profile: Invalid user data provided"}
+{"level":"error","message":"Error updating user Profile: Invalid user data provided"}
+{"level":"error","message":"Error updating user Profile: No email is provided"}

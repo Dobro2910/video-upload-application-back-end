@@ -15,10 +15,9 @@ export interface User {
 }
 
 // Update user interface
-export interface UserProfile {
+export interface UpdateProfile {
     userName?: string;
     userEmail?: string;
-    userRole?: string;
     userImage?: string;
 }
 

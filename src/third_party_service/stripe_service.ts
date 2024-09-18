@@ -1,8 +1,10 @@
-import Stripe from 'stripe';
+// import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-    apiVersion: '2024-06-20',
-});
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+//     apiVersion: '2024-06-20',
+// });
+
+import stripe from "../config/stripe_config";
 
 export const createPaymentIntent = async (amount: number, currency: string) => {
     return await stripe.paymentIntents.create({
