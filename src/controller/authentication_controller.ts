@@ -118,28 +118,32 @@ export class AuthenticationController {
             const userEmail = req.params.userEmail;
             const userName = req.body.userName;
             const userUpdateEmail = req.body.userEmail;
-            const userImage = req.file; 
+            const userImage = req.file;
+
             if (!userImage) {
                 return res.status(400).send('No image file provided');
             }
 
             const useImageURL = await uploadUserImageToS3(userImage);
+
             const newUserProfile: UpdateProfile = {
                 userName: userName,
                 userEmail: userUpdateEmail,
                 userImage: useImageURL
             };
 
+            // console.log(newUserProfile);
+
             const updatedUser: string | null = await this.authenticationService.updateUserProfile(newUserProfile, userEmail);
 
             if (!updatedUser) {
-                res.status(401).json({ error: 'Authentication failed: Email Already Exist' });
+                res.status(401).json({ error: 'Authentication failed: Current email doesnt exist' });
             } else {
                 res.status(200).json({ message: 'Update User Successful' });
             }
 
         } catch(error) {
-            logger.error(`Error updating password: ${(error as Error).message}`)
+            logger.error(`Error updating user Profile: ${(error as Error).message}`)
             res.status(500).send('Internal Server Error');
         }
     };

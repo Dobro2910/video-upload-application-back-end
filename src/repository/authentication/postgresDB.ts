@@ -123,20 +123,49 @@ export class AuthenticationRepositoryImplPostgres implements AuthenticationRepos
             postgresDB = await this.pool.connect();
 
             // Check if user properties are provided to avoid unnecessary errors
-            if (!user.userName || !user.userEmail || !user.userImage) {
-                throw new Error('Invalid user data provided');
+            if (!userEmail) {
+                throw new Error('No email is provided');
             }
 
-            const existingUser = await this.getUserByEmail(user.userEmail);
-            if (existingUser) {
+            const existingUser = await this.getUserByEmail(userEmail);
+            if (!existingUser) {
                 return null;
             }
 
-            // Perform the update query
-            await postgresDB.query(
-                'UPDATE users_prod SET user_name = $1, user_email = $2, user_image = $3 WHERE user_email = $4',
-                [user.userName, user.userEmail, user.userImage, userEmail]
-            );
+            // Build the dynamic query
+            const fieldsToUpdate: string[] = [];
+            const values: any[] = [];
+
+            // Check if each field is not null and add it to the update query
+            if (user.userName) {
+                fieldsToUpdate.push('user_name = $' + (values.length + 1));
+                values.push(user.userName);
+            }
+
+            if (user.userEmail) {
+                fieldsToUpdate.push('user_email = $' + (values.length + 1));
+                values.push(user.userEmail);
+            }
+
+            if (user.userImage) {
+                fieldsToUpdate.push('user_image = $' + (values.length + 1));
+                values.push(user.userImage);
+            }
+
+            // Ensure there are fields to update
+            if (fieldsToUpdate.length > 0) {
+                // Add the condition for WHERE clause (the original userEmail)
+                values.push(userEmail);
+
+                const query = `
+                    UPDATE users_prod
+                    SET ${fieldsToUpdate.join(', ')}
+                    WHERE user_email = $${values.length};
+                `;
+
+                // Perform the update query
+                await postgresDB.query(query, values);
+            }
 
             return 'Update User Successful';
         } catch (error) {
