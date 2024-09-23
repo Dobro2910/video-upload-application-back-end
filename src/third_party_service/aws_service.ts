@@ -1,7 +1,7 @@
 import s3 from '../config/aws_config';
 
 // Define Multer's File type for the file parameter
-export const uploadUserImageToS3 = async (file: Express.Multer.File): Promise<string> => {
+export const uploadImageToS3 = async (S3Location: string, file: Express.Multer.File): Promise<string> => {
     // Ensure S3 bucket name is available in the environment variables
     if (!process.env.S3_BUCKET_NAME) {
         throw new Error("S3_BUCKET_NAME is not defined in environment variables");
@@ -9,7 +9,8 @@ export const uploadUserImageToS3 = async (file: Express.Multer.File): Promise<st
 
     const params = {
         Bucket: process.env.S3_BUCKET_NAME as string,
-        Key: `userProfiles/${Date.now()}_${file.originalname}`, // Generate unique file name with timestamp
+        Key: S3Location + `/${Date.now()}_${file.originalname}`, // Generate unique file name with timestamp
+        // Key: `userProfiles/${Date.now()}_${file.originalname}`, // Generate unique file name with timestamp
         Body: file.buffer, // File buffer from Multer
         ContentType: file.mimetype, // MIME type of the file
     };

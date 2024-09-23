@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Product, ProductDisplay } from '../model/product_model';
 import { ProductService } from "../service/product_service";
+import { uploadImageToS3 } from '../third_party_service/aws_service';
 import logger from '../utils/logger';
 
 export class ProductController {
@@ -59,12 +60,19 @@ export class ProductController {
                 productCategory,
                 productDescription,
                 productGender,
-                productImage,
                 productPrice,
                 productSize,
                 productColorVarietyDetail,
             } = req.body;
-            
+
+            // Parse the productColorVarietyDetail string into a JavaScript array of objects
+            const parsedProductColorVarietyDetail = JSON.parse(productColorVarietyDetail);
+
+            // Check if a file (image) is attached in req.file
+            if (!req.file) {
+                return res.status(400).json({ error: 'Product image is required' });
+            }
+            const productImageURL = await uploadImageToS3(`products`, req.file);
             const productCreatedAt: Date = new Date();
             const productAmountSold: number = 0;
 
@@ -75,12 +83,12 @@ export class ProductController {
                 productCategory,
                 productDescription,
                 productGender,
-                productImage,
+                productImage: productImageURL,
                 productPrice,
                 productSize,
                 productCreatedAt,
                 productAmountSold,
-                productColorVarietyDetail
+                productColorVarietyDetail: parsedProductColorVarietyDetail
             };
     
             // Call ProductService to create the product

@@ -83000,3 +83000,12 @@
 {"level":"error","message":"Error updating user Profile: Invalid user data provided"}
 {"level":"error","message":"Error updating user Profile: Invalid user data provided"}
 {"level":"error","message":"Error updating user Profile: No email is provided"}
+{"level":"error","message":"Error creating product: Cannot read properties of undefined (reading 'originalname')"}
+{"level":"error","message":"Error creating product: Cannot read properties of undefined (reading 'originalname')"}
+{"level":"error","message":"Error creating product: Cannot read properties of undefined (reading 'originalname')"}
+{"level":"error","message":"Error creating product: Cannot read properties of undefined (reading 'originalname')"}
+{"level":"error","message":"Error creating product: Cannot read properties of undefined (reading 'originalname')"}
+{"level":"error","message":"Error creating product: Cannot read properties of undefined (reading 'originalname')"}
+{"level":"error","message":"Error creating product: Product color is required."}
+{"level":"error","message":"Error creating product: Product color is required."}
+{"level":"error","message":"Error creating product: Product color is required."}

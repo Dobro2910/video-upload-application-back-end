@@ -66,7 +66,7 @@ app.get("/product/search/filter", (req: Request, res: Response) => productContro
 // app.get("/product/allproduct", (req: Request, res: Response) => productController.getAllProduct(req, res));
 // app.get("/product/:productId", (req: Request, res: Response) => productController.getProductInfo(req, res));
 
-app.post("/product/createproduct", jwtMiddleware(['Seller', 'Admin']), (req: Request, res: Response) => productController.createProduct(req, res));
+app.post("/product/createproduct", jwtMiddleware(['Seller', 'Admin']), upload.single('productImage'), (req: Request, res: Response) => productController.createProduct(req, res));
 // app.put("/product/updateproductcolorvarietydetail/:productId", jwtMiddleware, (req: Request, res: Response) => productController.updateProductStock(req, res));
 // app.delete("/product/delete/:productId", jwtMiddleware(['Seller', 'Admin']), (req: Request, res: Response) => productController.deleteProduct(req, res));
 
