@@ -120,19 +120,16 @@ export class AuthenticationController {
             const userUpdateEmail = req.body.userEmail;
             const userImage = req.file;
 
-            if (!userImage) {
-                return res.status(400).send('No image file provided');
-            }
-
-            const userImageURL = await uploadImageToS3(`userProfiles`, userImage);
-
             const newUserProfile: UpdateProfile = {
                 userName: userName,
                 userEmail: userUpdateEmail,
-                userImage: userImageURL
+                userImage: undefined
             };
 
-            // console.log(newUserProfile);
+            if (userImage) {
+                const userImageURL = await uploadImageToS3(`userProfiles`, userImage);
+                newUserProfile.userImage = userImageURL;
+            } 
 
             const updatedUser: string | null = await this.authenticationService.updateUserProfile(newUserProfile, userEmail);
 
