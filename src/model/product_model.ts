@@ -44,9 +44,9 @@ export function validateProduct(product: Product): string {
         return "Product brand is required.";
     }
 
-    if (!product.productImage || product.productImage.length === 0) {
-        return "Product image is required.";
-    }
+    // if (!product.productImage || product.productImage.length === 0) {
+    //     return "Product image is required.";
+    // }
 
     if (!product.productCreatedAt || !(product.productCreatedAt instanceof Date)) {
         return "Invalid created date.";

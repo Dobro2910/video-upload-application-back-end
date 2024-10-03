@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { UpdateProfile, User, UserRole } from '../model/user_model';
 import { AuthenticationService } from "../service/authentication_service";
-import { uploadUserImageToS3 } from '../third_party_service/aws_service';
+import { uploadImageToS3 } from '../third_party_service/aws_service';
 import logger from '../utils/logger';
 
 export class AuthenticationController {
@@ -120,19 +120,16 @@ export class AuthenticationController {
             const userUpdateEmail = req.body.userEmail;
             const userImage = req.file;
 
-            if (!userImage) {
-                return res.status(400).send('No image file provided');
-            }
-
-            const useImageURL = await uploadUserImageToS3(userImage);
-
             const newUserProfile: UpdateProfile = {
                 userName: userName,
                 userEmail: userUpdateEmail,
-                userImage: useImageURL
+                userImage: undefined
             };
 
-            // console.log(newUserProfile);
+            if (userImage) {
+                const userImageURL = await uploadImageToS3(`userProfiles`, userImage);
+                newUserProfile.userImage = userImageURL;
+            } 
 
             const updatedUser: string | null = await this.authenticationService.updateUserProfile(newUserProfile, userEmail);
 
