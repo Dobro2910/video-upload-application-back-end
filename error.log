@@ -91372,3 +91372,5 @@
 {"level":"error","message":"Error saving payment order: paymentsOrder is not iterable"}
 {"level":"error","message":"Error saving payment order: paymentsOrder is not iterable"}
 {"level":"error","message":"Error saving payment order: paymentsOrder is not iterable"}
+{"level":"error","message":"Error creating product: null value in column \"seller_email\" of relation \"products_prod\" violates not-null constraint"}
+{"level":"error","message":"Error creating product: malformed array literal: \"[\"S\"]\""}

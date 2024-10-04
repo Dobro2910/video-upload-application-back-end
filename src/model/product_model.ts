@@ -15,6 +15,8 @@ export interface Product {
     productImage: string;
     productAmountSold: number;
     productColorVarietyDetail?: ProductColorVarietyDetail[];
+
+    sellerEmail: string;
 }
 
 export interface ProductColorVarietyDetail {
@@ -44,12 +46,12 @@ export function validateProduct(product: Product): string {
         return "Product brand is required.";
     }
 
-    // if (!product.productImage || product.productImage.length === 0) {
-    //     return "Product image is required.";
-    // }
-
     if (!product.productCreatedAt || !(product.productCreatedAt instanceof Date)) {
         return "Invalid created date.";
+    }
+
+    if (product.sellerEmail !== null && product.sellerEmail.length === 0) {
+        return "Seller email is required.";
     }
 
     return "";
@@ -72,6 +74,8 @@ export interface ProductDisplay {
     productImage: string;
     productAmountSold: number;
     productColorVarietyDetail?: ProductColorVarietyDetail[];
+
+    sellerEmail: string;
 }
 
 

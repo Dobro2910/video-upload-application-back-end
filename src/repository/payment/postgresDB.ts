@@ -36,8 +36,8 @@ export class PaymentRepositoryImplPostgres implements PaymentRepository {
                 // Insert the product order into the customer orders table
                 await postgresDB.query(
                     `INSERT INTO products_customer_order
-                    (product_id, product_name, product_description, product_price, product_gender, product_image, product_color, product_size, product_quantity)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+                    (product_id, product_name, product_description, product_price, product_gender, product_image, product_color, product_size, product_quantity, delivery_location, buyer_email, seller_email)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
                     [
                         paymentOrder.productId,
                         paymentOrder.productName,
@@ -47,7 +47,10 @@ export class PaymentRepositoryImplPostgres implements PaymentRepository {
                         paymentOrder.productImage,
                         paymentOrder.productColor,
                         paymentOrder.productSize,
-                        paymentOrder.productQuantity
+                        paymentOrder.productQuantity,
+                        paymentOrder.deliveryLocation,
+                        paymentOrder.buyerEmail,
+                        paymentOrder.sellerEmail
                     ]
                 );
     

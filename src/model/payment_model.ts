@@ -8,6 +8,10 @@ export interface PaymentOrder {
     productColor: string | null;
     productSize: string | null;
     productQuantity: number;
+
+    deliveryLocation: string;
+    buyerEmail: string;
+    sellerEmail: string;
 }
 
 export function validatePaymentOrder(paymentOrder: PaymentOrder): string {
@@ -45,6 +49,18 @@ export function validatePaymentOrder(paymentOrder: PaymentOrder): string {
 
     if (!paymentOrder.productQuantity || isNaN(paymentOrder.productQuantity) || paymentOrder.productQuantity <= 0) {
         return "Invalid product quantity.";
+    }
+
+    if (paymentOrder.deliveryLocation !== null && paymentOrder.deliveryLocation.length === 0) {
+        return "Location must be specified if provided.";
+    }
+
+    if (paymentOrder.buyerEmail !== null && paymentOrder.buyerEmail.length === 0) {
+        return "Buyer email must be specified if provided.";
+    }
+
+    if (paymentOrder.sellerEmail !== null && paymentOrder.sellerEmail.length === 0) {
+        return "Seller email must be specified if provided.";
     }
 
     return "";
