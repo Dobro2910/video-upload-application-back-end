@@ -9,7 +9,7 @@ export class PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
-    async savePaymentOrder(paymentsOrder: PaymentOrder[]): Promise<string | null> {
-        return await this.paymentRepository.savePaymentOrder(paymentsOrder);
+    async savePaymentOrder(paymentOrder: PaymentOrder): Promise<string | null> {
+        return await this.paymentRepository.savePaymentOrder(paymentOrder);
     }
 }

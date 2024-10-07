@@ -18,48 +18,48 @@ export class PaymentRepositoryImplPostgres implements PaymentRepository {
     // ROLLBACK:
     // If an error occurs during the transaction, ROLLBACK undoes all the changes made during the transaction, leaving the database in its previous state. 
     // This is useful to prevent partial updates that could lead to data corruption or inconsistency.
-    async savePaymentOrder(paymentsOrder: PaymentOrder[]): Promise<string | null> {
+    async savePaymentOrder(paymentOrder: PaymentOrder): Promise<string | null> {
         let postgresDB;
         try {
             postgresDB = await this.pool.connect();
             
             // Begin transaction
             await postgresDB.query('BEGIN');
-    
-            for (const paymentOrder of paymentsOrder) {
-                // Validate each product order
-                const validationError = validatePaymentOrder(paymentOrder);
-                if (validationError) {
-                    throw new Error(validationError);
-                }
-    
-                // Insert the product order into the customer orders table
-                await postgresDB.query(
-                    `INSERT INTO products_customer_order
-                    (product_id, product_name, product_description, product_price, product_gender, product_image, product_color, product_size, product_quantity, delivery_location, buyer_email, seller_email)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
-                    [
-                        paymentOrder.productId,
-                        paymentOrder.productName,
-                        paymentOrder.productDescription,
-                        paymentOrder.productPrice,
-                        paymentOrder.productGender,
-                        paymentOrder.productImage,
-                        paymentOrder.productColor,
-                        paymentOrder.productSize,
-                        paymentOrder.productQuantity,
-                        paymentOrder.deliveryLocation,
-                        paymentOrder.buyerEmail,
-                        paymentOrder.sellerEmail
-                    ]
-                );
-    
+            // Validate each product order
+            const validationError = validatePaymentOrder(paymentOrder);
+            if (validationError) {
+                throw new Error(validationError);
+            }
+
+            const productIdArray = [];
+            const productNameArray = [];
+            const productDescriptionArray = [];
+            const productPriceArray: number[] = [];
+            const productGenderArray = [];
+            const productImageArray = [];
+            const productColorArray = [];
+            const productSizeArray = [];
+            const productQuantityArray: number[] = [];
+            const sellerEmailArray = [];
+
+            for (const productInCart of paymentOrder.productsInCart) {
+                productIdArray.push(productInCart.productId);
+                productNameArray.push(productInCart.productName);
+                productDescriptionArray.push(productInCart.productDescription);
+                productPriceArray.push(Number(productInCart.productPrice)); 
+                productGenderArray.push(productInCart.productGender);
+                productImageArray.push(productInCart.productImage);
+                productColorArray.push(productInCart.productColor);
+                productSizeArray.push(productInCart.productSize);
+                productQuantityArray.push(Number(productInCart.productQuantity)); 
+                sellerEmailArray.push(productInCart.sellerEmail);
+
                 // Update productAmountSold in the products table
                 await postgresDB.query(
                     `UPDATE products_prod 
                     SET product_amount_sold = product_amount_sold + $1 
                     WHERE product_id = $2`,
-                    [paymentOrder.productQuantity, paymentOrder.productId]
+                    [productInCart.productQuantity, productInCart.productId]
                 );
     
                 // Update productStock in the products_color_variety_detail_prod table
@@ -67,9 +67,32 @@ export class PaymentRepositoryImplPostgres implements PaymentRepository {
                     `UPDATE products_color_variety_detail_prod 
                     SET product_stock[ARRAY_POSITION(product_size, $4)] = product_stock[ARRAY_POSITION(product_size, $4)] - $1
                     WHERE product_id = $2 AND product_color = $3 AND $4 = ANY(product_size);`,
-                    [paymentOrder.productQuantity, paymentOrder.productId, paymentOrder.productColor, paymentOrder.productSize]
+                    [productInCart.productQuantity, productInCart.productId, productInCart.productColor, productInCart.productSize]
                 );
             }
+
+            // Insert the product order into the customer orders table
+            await postgresDB.query(
+                `INSERT INTO products_customer_order
+                (product_id, product_name, product_description, product_price, product_gender, product_image, product_color, product_size, product_quantity, seller_email, delivery_location, buyer_email, total_price, order_delivered)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
+                [
+                    productIdArray,
+                    productNameArray,
+                    productDescriptionArray,
+                    productPriceArray,
+                    productGenderArray,
+                    productImageArray,
+                    productColorArray,
+                    productSizeArray,
+                    productQuantityArray,
+                    sellerEmailArray,
+                    paymentOrder.deliveryLocation,
+                    paymentOrder.buyerEmail,
+                    paymentOrder.totalPrice,
+                    paymentOrder.orderDelivered,
+                ]
+            );
     
             // Commit transaction
             await postgresDB.query('COMMIT');

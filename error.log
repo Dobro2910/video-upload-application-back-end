@@ -91374,3 +91374,13 @@
 {"level":"error","message":"Error saving payment order: paymentsOrder is not iterable"}
 {"level":"error","message":"Error creating product: null value in column \"seller_email\" of relation \"products_prod\" violates not-null constraint"}
 {"level":"error","message":"Error creating product: malformed array literal: \"[\"S\"]\""}
+{"level":"error","message":"Error saving payment order: Buyer email is required."}
+{"level":"error","message":"Error saving payment order: Buyer email is required."}
+{"level":"error","message":"Error saving payment order: Buyer email is required."}
+{"level":"error","message":"Error saving payment order: Buyer email is required."}
+{"level":"error","message":"Error saving payment order: Buyer email is required."}
+{"level":"error","message":"Error saving payment order: column \"product_price\" is of type numeric[] but expression is of type text[]"}
+{"level":"error","message":"Error saving payment order: column \"product_price\" is of type numeric[] but expression is of type text[]"}
+{"level":"error","message":"Error saving payment order: column \"product_price\" is of type numeric[] but expression is of type text[]"}
+{"level":"error","message":"Error saving payment order: column \"product_price\" is of type numeric[] but expression is of type text[]"}
+{"level":"error","message":"Error saving payment order: column \"product_price\" is of type numeric[] but expression is of type text[]"}

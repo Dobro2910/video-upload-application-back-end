@@ -15,7 +15,19 @@ export interface Product {
     productImage: string;
     productAmountSold: number;
     productColorVarietyDetail?: ProductColorVarietyDetail[];
+    sellerEmail: string;
+}
 
+export interface ProductInCart {
+    productId: string;
+    productName: string;
+    productDescription: string;
+    productPrice: number;
+    productGender: string;
+    productImage: string;
+    productColor: string | null;
+    productSize: string | null;
+    productQuantity: number;
     sellerEmail: string;
 }
 
