@@ -25,6 +25,7 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
                             p.product_gender AS "productGender", 
                             p.product_image AS "productImage", 
                             p.product_amount_sold AS "productAmountSold",
+                            p.seller_email AS "sellerEmail",
                             json_agg(json_build_object(
                                 'productColor', pcvd.product_color,
                                 'productSize', pcvd.product_size,
@@ -113,6 +114,7 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
                             p.product_gender AS "productGender", 
                             p.product_image AS "productImage", 
                             p.product_amount_sold AS "productAmountSold",
+                            p.seller_email AS "sellerEmail",
                             json_agg(json_build_object(
                                 'productColor', pcvd.product_color,
                                 'productSize', pcvd.product_size,
@@ -189,9 +191,10 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
                     product_size, 
                     product_created_time, 
                     product_updated_time, 
-                    product_amount_sold
+                    product_amount_sold,
+                    seller_email
                 ) VALUES (
-                    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+                    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
                 ) RETURNING product_id`,
                 [
                     product.productName,
@@ -204,7 +207,8 @@ export class ProductRepositoryImplPostgres implements ProductRepository {
                     product.productSize, // This is an array
                     product.productCreatedAt || new Date(), // Use current date if not provided
                     product.productUpdatedAt || new Date(), // Use current date if not provided
-                    product.productAmountSold || 0 // Default to 0 if not provided
+                    product.productAmountSold || 0, // Default to 0 if not provided
+                    product.sellerEmail
                 ]
             );
 

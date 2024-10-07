@@ -61,12 +61,14 @@ export class ProductController {
                 productDescription,
                 productGender,
                 productPrice,
-                productSize,
                 productColorVarietyDetail,
+                productSize,
+                sellerEmail
             } = req.body;
 
-            // Parse the productColorVarietyDetail string into a JavaScript array of objects
+            // Parse the productColorVarietyDetail and productSize from json into array format
             const parsedProductColorVarietyDetail = JSON.parse(productColorVarietyDetail);
+            const parsedProductSize = JSON.parse(productSize);
 
             // Check if a file (image) is attached in req.file
             if (!req.file) {
@@ -85,10 +87,11 @@ export class ProductController {
                 productGender,
                 productImage: productImageURL,
                 productPrice,
-                productSize,
+                productSize: parsedProductSize,
                 productCreatedAt,
                 productAmountSold,
-                productColorVarietyDetail: parsedProductColorVarietyDetail
+                productColorVarietyDetail: parsedProductColorVarietyDetail,
+                sellerEmail,
             };
     
             // Call ProductService to create the product
