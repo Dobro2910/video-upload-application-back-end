@@ -91384,3 +91384,9 @@
 {"level":"error","message":"Error saving payment order: column \"product_price\" is of type numeric[] but expression is of type text[]"}
 {"level":"error","message":"Error saving payment order: column \"product_price\" is of type numeric[] but expression is of type text[]"}
 {"level":"error","message":"Error saving payment order: column \"product_price\" is of type numeric[] but expression is of type text[]"}
+{"level":"error","message":"Error getting orders: column \"expanded.deliverylocation\" must appear in the GROUP BY clause or be used in an aggregate function"}
+{"level":"error","message":"Error getting orders: column p.order_id does not exist"}
+{"level":"error","message":"Error getting orders: column p.order_id does not exist"}
+{"level":"error","message":"Error getting orders: column p.order_id does not exist"}
+{"level":"error","message":"Error getting orders: column p.order_id does not exist"}
+{"level":"error","message":"Error getting orders: column \"expanded.orderid\" must appear in the GROUP BY clause or be used in an aggregate function"}

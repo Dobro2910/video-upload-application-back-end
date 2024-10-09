@@ -28,6 +28,9 @@ import { StripeController } from './third_party_controller/stripe_controller';
 import { PaymentRepositoryImplPostgres } from './repository/payment/postgresDB';
 import { PaymentService } from './service/payment_service';
 import { PaymentController } from './controller/payment_controller';
+import { OrderService } from "./service/order_service";
+import { OrderController } from "./controller/order_controller";
+import { OrderRepositoryImplPostgres } from "./repository/order/postgresDB";
 
 const app: Express = express();
 
@@ -76,11 +79,15 @@ const paymentService = new PaymentService(paymentRepository);
 const paymentController = new PaymentController(paymentService);
 
 app.post("/payment/saveorder", jwtMiddleware(['User', 'Seller', 'Admin']), (req: Request, res: Response) => paymentController.saveProductsOrder(req, res));
-// app.post("/payment/saveorder", (req: Request, res: Response) => paymentController.saveProductsOrder(req, res));
 
-// calling api from other services
+// Order
+const orderRepository = new OrderRepositoryImplPostgres(pool);
+const orderService = new OrderService(orderRepository);
+const orderController = new OrderController(orderService);
 
-// stripe payment
+app.get("/order/getpaginatedorders", jwtMiddleware(['Seller', 'Admin']), (req: Request, res: Response) => orderController.getPaginatedOrders(req, res));
+
+// Stripe Payment
 app.post('/create-payment-intent', (req: Request, res: Response) => StripeController.createPaymentIntent(req, res));
 
 app.listen(port, () => {console.log(`Server is running on http://localhost:${port}`);});
