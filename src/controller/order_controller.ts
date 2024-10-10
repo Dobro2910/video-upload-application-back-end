@@ -17,8 +17,6 @@ export class OrderController {
             const page: number = parseInt(req.query.page as string);
             const orders: Order[] | null =  await this.orderService.getPaginatedOrders(page, sellerEmail);
 
-            console.log(orders);
-
             if (!orders) {
                 res.status(404).json({ error: 'There are no order' });
             } else {
@@ -27,6 +25,23 @@ export class OrderController {
 
         } catch (error) {
             logger.error(`Error getting orders: ${(error as Error).message}`);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
+    async completeOrder(req: Request, res: Response) {
+        try {
+            const orderId: string = req.body.orderId;
+            const result: string | null =  await this.orderService.completeOrder(orderId);
+
+            if (!result) {
+                res.status(404).json({ error: 'Order not found or no updates made.' });
+            } else {
+                res.status(200).json({ message: 'Order Completed!' });
+            }
+
+        } catch (error) {
+            logger.error(`Error occur when completing order: ${(error as Error).message}`);
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }

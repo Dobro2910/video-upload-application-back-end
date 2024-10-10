@@ -12,6 +12,7 @@ export interface Order {
     deliveryLocation: string;
     buyerEmail: string;
     totalPrice: number;
+    orderDelivered: boolean;
 }
 
 export function validatePaymentOrder(order: Order): string {

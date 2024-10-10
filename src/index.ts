@@ -86,6 +86,7 @@ const orderService = new OrderService(orderRepository);
 const orderController = new OrderController(orderService);
 
 app.get("/order/getpaginatedorders", jwtMiddleware(['Seller', 'Admin']), (req: Request, res: Response) => orderController.getPaginatedOrders(req, res));
+app.put("/order/completeorder", jwtMiddleware(['Seller', 'Admin']), (req: Request, res: Response) => orderController.completeOrder(req, res));
 
 // Stripe Payment
 app.post('/create-payment-intent', (req: Request, res: Response) => StripeController.createPaymentIntent(req, res));

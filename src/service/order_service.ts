@@ -12,4 +12,8 @@ export class OrderService {
     async getPaginatedOrders(page: number, sellerEmail: string): Promise<Order[] | null> {
         return await this.orderRepository.getPaginatedOrders(page, sellerEmail);
     }
+
+    async completeOrder(orderId: string): Promise<string | null> {
+        return await this.orderRepository.completeOrder(orderId);
+    }
 }

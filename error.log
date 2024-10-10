@@ -91390,3 +91390,7 @@
 {"level":"error","message":"Error getting orders: column p.order_id does not exist"}
 {"level":"error","message":"Error getting orders: column p.order_id does not exist"}
 {"level":"error","message":"Error getting orders: column \"expanded.orderid\" must appear in the GROUP BY clause or be used in an aggregate function"}
+{"level":"error","message":"Error getting orders: syntax error at or near \"p\""}
+{"level":"error","message":"Error getting orders: syntax error at or near \"p\""}
+{"level":"error","message":"Error occur when completing order: column \"order_id\" does not exist"}
+{"level":"error","message":"Error occur when completing order: column \"order_id\" does not exist"}
