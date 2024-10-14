@@ -5,7 +5,8 @@ export interface PaymentOrder {
 
     deliveryLocation: string;
     buyerEmail: string;
-    orderDelivered: boolean;
+    // colorVarietyId: string;
+    // orderDelivered: boolean;
     totalPrice: number;
 }
 

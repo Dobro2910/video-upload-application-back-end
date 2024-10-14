@@ -13,7 +13,7 @@ export class OrderService {
         return await this.orderRepository.getPaginatedOrders(page, sellerEmail);
     }
 
-    async completeOrder(orderId: string): Promise<string | null> {
-        return await this.orderRepository.completeOrder(orderId);
+    async completeOrder(orderId: string, productIndex: number): Promise<string | null> {
+        return await this.orderRepository.completeOrder(orderId, productIndex);
     }
 }

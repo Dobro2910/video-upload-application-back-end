@@ -31,11 +31,11 @@ export class OrderRepositoryImplPostgres implements OrderRepository {
                                 unnest(p.product_quantity) AS productQuantity,
                                 unnest(p.product_color) AS productColor,
                                 unnest(p.product_size) AS productSize,
-                                p.product_order_id as orderId,
+                                unnest(p.order_delivered) AS orderDelivered,
+                                p.product_order_id AS orderId,
                                 p.delivery_location AS deliveryLocation,
                                 p.buyer_email AS buyerEmail,
-                                p.total_price AS totalPrice,
-                                p.order_delivered AS orderDelivered
+                                p.total_price AS totalPrice
                             FROM 
                                 products_customer_order p
                         )
@@ -49,19 +49,17 @@ export class OrderRepositoryImplPostgres implements OrderRepository {
                             ARRAY_AGG(productQuantity) AS "productQuantity",
                             ARRAY_AGG(productColor) AS "productColor",
                             ARRAY_AGG(productSize) AS "productSize",
+                            ARRAY_AGG(orderDelivered) AS "orderDelivered",
                             orderId AS "orderId",
                             deliveryLocation AS "deliveryLocation", 
                             buyerEmail AS "buyerEmail", 
-                            totalPrice AS "totalPrice",
-                            orderDelivered AS "orderDelivered"
+                            totalPrice AS "totalPrice"
                         FROM 
                             expanded
                         WHERE 
                             sellerEmail = $1
                         GROUP BY 
-                            orderId, deliveryLocation, buyerEmail, totalPrice, orderDelivered
-                        ORDER BY 
-                            totalPrice
+                            orderId, deliveryLocation, buyerEmail, totalPrice
                         LIMIT $2 OFFSET $3;
                         `;
             const result = await this.pool.query(query,[sellerEmail, limit, pageRange]);
@@ -80,19 +78,21 @@ export class OrderRepositoryImplPostgres implements OrderRepository {
         }
     }
 
-    async completeOrder(orderId: string): Promise<string | null> {
+    async completeOrder(orderId: string, productIndex: number): Promise<string | null> {
         let postgresDB;
         try {
             postgresDB = await this.pool.connect();
+
+            console.log(productIndex);
             
             // Update the specific order using an order ID to avoid updating all rows.
             const result = await postgresDB.query(
                 `UPDATE products_customer_order 
-                SET order_delivered = true 
-                WHERE product_order_id = $1`,
-                [orderId]
+                SET order_delivered[$2] = true 
+                WHERE product_order_id = $1;`,
+                [orderId, productIndex]
             );
-
+            
             // Check if any rows were updated
             if (result.rowCount && result.rowCount > 0) {
                 return "Order Completed!";

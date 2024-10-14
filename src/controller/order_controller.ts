@@ -32,7 +32,8 @@ export class OrderController {
     async completeOrder(req: Request, res: Response) {
         try {
             const orderId: string = req.body.orderId;
-            const result: string | null =  await this.orderService.completeOrder(orderId);
+            const productIndex: number = req.body.productIndex;
+            const result: string | null =  await this.orderService.completeOrder(orderId, productIndex);
 
             if (!result) {
                 res.status(404).json({ error: 'Order not found or no updates made.' });

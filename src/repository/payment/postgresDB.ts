@@ -41,6 +41,7 @@ export class PaymentRepositoryImplPostgres implements PaymentRepository {
             const productSizeArray = [];
             const productQuantityArray: number[] = [];
             const sellerEmailArray = [];
+            const orderDeliveredArray: boolean[] = [];
 
             for (const productInCart of paymentOrder.productsInCart) {
                 productIdArray.push(productInCart.productId);
@@ -53,6 +54,7 @@ export class PaymentRepositoryImplPostgres implements PaymentRepository {
                 productSizeArray.push(productInCart.productSize);
                 productQuantityArray.push(Number(productInCart.productQuantity)); 
                 sellerEmailArray.push(productInCart.sellerEmail);
+                orderDeliveredArray.push(false);
 
                 // Update productAmountSold in the products table
                 await postgresDB.query(
@@ -90,7 +92,8 @@ export class PaymentRepositoryImplPostgres implements PaymentRepository {
                     paymentOrder.deliveryLocation,
                     paymentOrder.buyerEmail,
                     paymentOrder.totalPrice,
-                    paymentOrder.orderDelivered,
+                    orderDeliveredArray
+                    // paymentOrder.orderDelivered,
                 ]
             );
     
